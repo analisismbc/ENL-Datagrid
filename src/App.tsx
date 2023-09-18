@@ -1,7 +1,10 @@
-import { GridColumnHeaderParams, GridValueGetterParams, GridValueSetterParams } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColumnHeaderParams, GridRowsProp, GridValueGetterParams, GridValueSetterParams } from "@mui/x-data-grid";
 
 import { Box } from "@mui/material";
 import { FullFeaturedCrudGrid } from "./Grid/Grid.component.mbc"
+import { GridCellNewValueParams } from "./Grid/Utils";
+import { handleCellFilter } from "./Utils/handler.column.id";
+import { handleCellFilterDate } from "./Utils/handler.column.date";
 
 export const App = () => {
 
@@ -11,11 +14,13 @@ export const App = () => {
       headerName: "Text",
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
-          {'Non Editable Type'}
+          {'Type Text'}
         </strong>
       ),
       flex: 2,
       type: "text",
+      editable: true,
+      //search: handleCellFilter
     },
     {
       field: "column2",
@@ -28,6 +33,7 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
+      search: handleCellFilterDate
     },
     {
       field: "column3",
@@ -70,14 +76,15 @@ export const App = () => {
       field: "column6",
       renderHeader: (params: GridColumnHeaderParams) => (
         <strong>
-          {'Text Type'}
+          {'Non Editable Type'}
         </strong>
       ),
       headerName: "Text",
       flex: 2,
-      editable: true,
+      editable: false,
     },
   ];
+
 
   const dataGridRows = [
     {
@@ -87,7 +94,7 @@ export const App = () => {
       column3: "Brazil",
       column4: 1250,
       column5: true,
-      column6: "Value 6",
+      column6: "Value 1",
     },
     {
       id: 2,
@@ -96,7 +103,7 @@ export const App = () => {
       column3: "Spain",
       column4: 2600,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 2",
     },
     {
       id: 3,
@@ -105,7 +112,7 @@ export const App = () => {
       column3: "Spain",
       column4: 7800,
       column5: false,
-      column6: "Value 12",
+      column6: "Value 3",
     },
     {
       id: 4,
@@ -114,7 +121,7 @@ export const App = () => {
       column3: "Brazil",
       column4: 1520,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 4",
     },
     {
       id: 5,
@@ -123,16 +130,16 @@ export const App = () => {
       column3: "Brazil",
       column4: 5999,
       column5: false,
-      column6: "Value 12",
+      column6: "Value 5",
     },
     {
       id: 6,
-      column1: "Value 7",
+      column1: "Value 6",
       column2: new Date('05/01/1999'),
       column3: "Brazil",
       column4: 5999,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 6",
     },
     {
       id: 7,
@@ -141,34 +148,34 @@ export const App = () => {
       column3: "Spain",
       column4: 5999,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 7",
     },
     {
       id: 8,
-      column1: "Value 7",
+      column1: "Value 8",
       column2: new Date('05/01/1999'),
       column3: "United Kingdom",
       column4: 5999,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 8",
     },
     {
       id: 9,
-      column1: "Value 7",
+      column1: "Value 9",
       column2: new Date('05/01/1999'),
       column3: "United Kingdom",
       column4: 5999,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 9",
     },
     {
       id: 10,
-      column1: "Value 7",
+      column1: "Value 10",
       column2: new Date('05/01/1999'),
       column3: "Spain",
       column4: 5999,
       column5: true,
-      column6: "Value 12",
+      column6: "Value 10",
     },
   ];
 

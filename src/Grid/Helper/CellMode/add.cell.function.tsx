@@ -3,7 +3,7 @@ import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp } from "@mu
 import { randomId } from "@mui/x-data-grid-generator";
 
 export const handleAddClickCellMode = (
-    setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
+    handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
@@ -31,7 +31,7 @@ export const handleAddClickCellMode = (
         // Initialize each field in the new row
         columns.forEach((column) => {
 
-            newRow[column.field] = column.field === 'column1' ? id : '';
+            newRow[column.field] = column.field === 'id' ? id : '';
 
         });
 
@@ -59,7 +59,7 @@ export const handleAddClickCellMode = (
 
         });
 
-        setCellModesModel(updatedCellModesModel);
+        handleCellModesModelChange(updatedCellModesModel);
 
     }
 

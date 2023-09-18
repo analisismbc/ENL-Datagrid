@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCallbackDetails, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridRowEditStopReasons, GridRowModel, GridRowModes, GridRowModesModel, GridRowsProp, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
-import { handleKeyDownGridContext, handleKeyDownPageContext } from "./Key";
-import { useEffect, useState } from "react";
+import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridRowModel, GridRowsProp, GridSortModel, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
+import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
+import { useCallback, useEffect, useState } from "react";
 
-import { findEditedCellValue } from "./Utils/updated.cell";
 import { generateGridColumns } from "./Utils/Columns";
+import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
+import { handleKeyDownPageContext } from "./Key";
 
 const mode = 'cell';
 
@@ -19,23 +20,27 @@ interface GridDefinitionProps {
 export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: GridDefinitionProps) => {
 
     const [rows, setRows] = useState<GridRowsProp<any>>(_rows);
-    const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
+
     const apiRef = useGridApiRef();
+
+    //----------------------------------------------------------------
+
+    const handleCellModesModelChange = useCallback((newCellModesModel: GridCellModesModel) => {
+
+        setCellModesModel({ ...newCellModesModel });
+
+    }, [setCellModesModel, cellModesModel]);
 
     // Use the generateGridColumns function to generate the columns
     const columns: GridColDef<any>[] = generateGridColumns(
         _columns,
         null, //t
         rows,
-        setRows,
-        setRowModesModel,
-        rowModesModel,
-        setCellModesModel,
+        handleCellModesModelChange,
         cellModesModel
     );
-
-    useEffect(() => { console.log('rows-effect: ', rows) }, [rows])
 
     // Add a global event listener for keydown events on the whole page for Shift key press
     useEffect(() => {
@@ -45,10 +50,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
             handleKeyDownPageContext(rows,
                 event,
                 setRows,
-                setRowModesModel,
                 columns,
-                rowModesModel,
-                setCellModesModel,
+                handleCellModesModelChange,
                 cellModesModel,
                 mode);
 
@@ -60,99 +63,107 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         return () => {
 
             document.removeEventListener('keydown', _handleKeyDownPageContext);
+
         };
 
-    }, [setRows, setRowModesModel, columns, rowModesModel]);
-
-
-    const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
-
-        handleKeyDownGridContext(params, event, rowModesModel, rows, setRows, setRowModesModel, setCellModesModel, cellModesModel, columns, mode);
-
-    };
-
-    //--------------------------------------------------------------
-    const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
-
-        if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-
-            event.defaultMuiPrevented = true;
-
-            const rowFocusOutRow = { ...rowModesModel, [params.id]: { mode: GridRowModes.View } };
-
-            setRowModesModel(rowFocusOutRow);
-        }
-
-    };
-
+    }, [rows, columns, cellModesModel]);
 
     //----------------------------------------------------------------
-
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
 
-        console.log('new-value: ', findEditedCellValue(newRow, oldRow))
+        const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow);
 
-        setRows((rows) =>
+        if (params) {
 
-            rows.map((row) => (row.id === newRow.id ? { ...newRow, isNew: false } : row))
+            handleCellEvent(params);
 
-        );
+        }
 
         return newRow;
 
     };
 
-    //----------------------------------------------------------------
-    const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-
-        setRowModesModel(newRowModesModel);
-
-    };
-
-    const handleCellModesModelChange = (newCellModesModel: GridCellModesModel) => {
-
-        setCellModesModel(newCellModesModel);
-
-    };
-
     //-----------------------------------------------------------------
 
+    const handleCellEvent = (params: GridCellNewValueParams) => {
+
+        const searchFunction: any = _columns.find((column) => column.field.toString() === params?.field);
+
+        const filter: Function = searchFunction?.search;
+
+        if (searchFunction && filter) {
+
+            filter(
+                handleCellModesModelChange,
+                cellModesModel,
+                params,
+                rows,
+                setRows,
+                columns,
+            );
+
+        } else {
+
+            handleJumpClickCellMode(
+                columns,
+                handleCellModesModelChange,
+                cellModesModel,
+                params,
+                rows,
+                setRows
+            )
+
+        }
+
+    }
+
+    useEffect(() => {
+
+        //console.log('rows-update: ', rows)
+
+    }, [rows])
+
+    useEffect(() => {
+
+        //console.log('cell-mode-update: ', cellModesModel)
+
+    }, [cellModesModel])
+
+
     return (
+
         <Box sx={{
             textAlign: 'center', marginLeft: '15%', marginTop: '7%',
             width: '70%', boxShadow: 3, zIndex: 999, borderRadius: '5px'
         }}>
-            <Typography sx={{
-                height: '2.3vw', borderRadius: '5px',
-                background: '#f8f8f8', color: '#1976d2',
-                fontSize: '1.5rem', textAlign: 'center',
-                padding: '10px', paddingBottom: '10px'
-            }}>MODE: {mode.toUpperCase()}
+
+            <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
+
+                {`MODE: ${mode.toUpperCase()}`}
+
             </Typography>
 
             <DataGrid
+                editMode={mode}
                 rows={rows}
                 columns={columns}
+                getRowId={(row: any) => row.id}
+                cellModesModel={cellModesModel}
+                onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}
-                editMode={mode}
+                onProcessRowUpdateError={(error) => { console.error("Error during row update:", error) }}
                 apiRef={apiRef}
                 sx={{
                     width: '100%',
                     height: '50vh', boxShadow: 0,
                     padding: '0.5vw'
                 }}
-                rowModesModel={rowModesModel}
-                cellModesModel={cellModesModel}
                 //onRowClick={_handleRowClick}
-                onCellKeyDown={handleCellKeyDown}
-                onRowModesModelChange={handleRowModesModelChange}
-                onCellModesModelChange={handleCellModesModelChange}
-                onRowEditStop={handleRowEditStop}
-                //onCellEditStop={handleCellEditStop}
                 columnVisibilityModel={{
                     actions: false,
                 }}
             />
+
         </Box>
     );
 }

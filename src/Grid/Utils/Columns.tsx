@@ -1,5 +1,4 @@
 import { GridActionsCellItem, GridCellModesModel, GridColDef, GridRowModes, GridRowModesModel } from "@mui/x-data-grid";
-import { handleAddClickRowMode, handleCancelClickRowMode, handleDeleteClickRowMode, handleEditClickRowMode, handleSaveClickRowMode } from "../Helper";
 
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Close';
@@ -12,9 +11,6 @@ export const generateGridColumns = (
     customColumns: GridColDef<any>[],
     t: any,
     rows: GridRowsProp<any>,
-    setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
-    setRowModesModel: (updatedRowModesModel: any) => void,
-    rowModesModel: GridRowModesModel,
     setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
 ) => {
@@ -28,7 +24,7 @@ export const generateGridColumns = (
             flex: 3,
             cellClassName: 'actions',
             renderCell: ({ id }) => {
-                const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+                const isInEditMode = true;//rowModesModel[id]?.mode === GridRowModes.Edit;
 
                 if (isInEditMode) {
                     return [
@@ -38,13 +34,13 @@ export const generateGridColumns = (
                             sx={{
                                 color: 'primary.main',
                             }}
-                            onClick={handleSaveClickRowMode(rows, setRowModesModel, rowModesModel, id)}
+                        //onClick={handleSaveClickRowMode(rows, setRowModesModel, rowModesModel, id)}
                         />,
                         <GridActionsCellItem
                             icon={<CancelIcon sx={{ color: 'red' }} />}
                             label="Cancel"
                             className="textPrimary"
-                            onClick={handleCancelClickRowMode(rows, setRows, setRowModesModel, rowModesModel, id)}
+                            //onClick={handleCancelClickRowMode(rows, setRows, setRowModesModel, rowModesModel, id)}
                             color="inherit"
                         />,
                     ];
@@ -55,19 +51,19 @@ export const generateGridColumns = (
                         icon={<EditIcon sx={{ color: 'lightblue' }} />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClickRowMode(rows, setRowModesModel, id)}
+                        //onClick={handleEditClickRowMode(rows, setRowModesModel, id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<AddIcon sx={{ color: 'lightblue' }} />}
                         label="Add"
-                        onClick={handleAddClickRowMode(rows, setRows, setRowModesModel, columns, rowModesModel)}
+                        //onClick={handleAddClickRowMode(rows, setRows, setRowModesModel, columns, rowModesModel)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon sx={{ color: 'lightblue' }} />}
                         label="Delete"
-                        onClick={handleDeleteClickRowMode(rows, setRows, id)}
+                        //={handleDeleteClickRowMode(rows, setRows, id)}
                         color="inherit"
                     />,
                 ];
