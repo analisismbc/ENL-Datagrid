@@ -8,12 +8,6 @@ export interface GridCellNewValueParams {
 
 export const findEditedCellValue = (newRow: GridRowModel, oldRow: GridRowModel): GridCellNewValueParams | null => {
 
-    console.clear();
-
-    console.log('new: ', newRow);
-
-    console.log('old: ', oldRow);
-
     for (const key in newRow) {
         if (oldRow[key] !== newRow[key]) {
             return {

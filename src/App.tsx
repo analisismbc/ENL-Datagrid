@@ -1,8 +1,6 @@
-import { GridCellModes, GridCellModesModel, GridColumnHeaderParams, GridRowsProp, GridValueGetterParams, GridValueSetterParams } from "@mui/x-data-grid";
-
 import { Box } from "@mui/material";
 import { FullFeaturedCrudGrid } from "./Grid/Grid.component.mbc"
-import { GridCellNewValueParams } from "./Grid/Utils";
+import { GridColumnHeaderParams } from "@mui/x-data-grid";
 import { handleCellFilter } from "./Utils/handler.column.id";
 import { handleCellFilterDate } from "./Utils/handler.column.date";
 
@@ -20,7 +18,7 @@ export const App = () => {
       flex: 2,
       type: "text",
       editable: true,
-      //search: handleCellFilter
+      search: handleCellFilter
     },
     {
       field: "column2",
@@ -33,7 +31,7 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
-      search: handleCellFilterDate
+      //search: handleCellFilterDate
     },
     {
       field: "column3",
@@ -181,7 +179,9 @@ export const App = () => {
 
   return (
     <Box>
+
       <FullFeaturedCrudGrid _rows={dataGridRows} _columns={dataGridColumns} />
+      
     </Box>
   )
 }

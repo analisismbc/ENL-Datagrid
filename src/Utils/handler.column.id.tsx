@@ -1,6 +1,8 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
 
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
+import { focus } from "../Grid/Helper/CellMode/focus.cell";
 import { handleJumpClickCellMode } from "../Grid/Helper";
 
 export const handleCellFilter: Function = (
@@ -11,6 +13,7 @@ export const handleCellFilter: Function = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],
+    apiRef: React.MutableRefObject<GridApiCommunity>
 
 ) => {
 
@@ -46,21 +49,12 @@ export const handleCellFilter: Function = (
         // Use setTimeout to ensure it's called once in the next tick
         setTimeout(() => {
 
-            handleCellModesModelChange({
-                [existingRow?.id ?? 0]: {
-
-                    ...cellModesModel[existingRow?.id ?? 0],
-
-                    [params?.field ?? 'id']: { mode: GridCellModes.Edit },
-
-                }
-            });
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
 
         }, 0);
 
 
     } else {
-
 
         if (params) {
 
@@ -70,10 +64,12 @@ export const handleCellFilter: Function = (
                 cellModesModel,
                 params,
                 rows,
-                setRows
+                setRows,
+                apiRef
             )
 
         }
 
     }
 };
+

@@ -1,5 +1,6 @@
 import { GridCellModes, GridCellModesModel, GridColDef, GridRowId, GridRowsProp } from "@mui/x-data-grid";
 
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../../Utils";
 import { handleSaveClickCellMode } from "./save.cell.function";
 
@@ -10,11 +11,10 @@ export const handleJumpClickCellMode = (
     params: GridCellNewValueParams,
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
+    apiRef: React.MutableRefObject<GridApiCommunity>,
 ) => {
 
     const { id, field } = params;
-
-    console.log('handleJumpClickCellMode');
 
     const rowIndex = rows.findIndex((x) => x.id === id);
 

@@ -1,8 +1,9 @@
-import { GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
 
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
+import { focus } from "../Grid/Helper/CellMode/focus.cell";
 import { handleJumpClickCellMode } from "../Grid/Helper/CellMode/jump.cell.function";
-import { handleSaveClickCellMode } from "../Grid/Helper";
 
 export const handleCellFilterDate: Function = (
 
@@ -12,6 +13,7 @@ export const handleCellFilterDate: Function = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],
+    apiRef: React.MutableRefObject<GridApiCommunity>
 
 ) => {
 
@@ -30,6 +32,12 @@ export const handleCellFilterDate: Function = (
 
     if (existingRow) {
 
+        setRows((rows) =>
+            rows.map((row) =>
+                row.id === existingRow.id ? { ...existingRow, isNew: false, ignoreModifications: true } : row
+            )
+        );
+
         if (isCellNew) {
             // Remove the current cell if it's new
             setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
@@ -41,12 +49,7 @@ export const handleCellFilterDate: Function = (
         // Use setTimeout to ensure it's called once in the next tick
         setTimeout(() => {
 
-            handleCellModesModelChange({
-                [existingRow?.id ?? 0]: {
-                    ...cellModesModel[existingRow?.id ?? 0],
-                    [params?.field ?? 'id']: { mode: GridCellModes.Edit },
-                }
-            });
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
 
         }, 0);
 
@@ -62,7 +65,8 @@ export const handleCellFilterDate: Function = (
                 cellModesModel,
                 params,
                 rows,
-                setRows
+                setRows,
+                apiRef
             )
 
         }
