@@ -18,7 +18,7 @@ export const App = () => {
       flex: 2,
       type: "text",
       editable: true,
-      search: handleCellFilter
+      //search: handleCellFilter
     },
     {
       field: "column2",
@@ -31,7 +31,7 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
-      //search: handleCellFilterDate
+      search: handleCellFilterDate
     },
     {
       field: "column3",
@@ -79,7 +79,8 @@ export const App = () => {
       ),
       headerName: "Text",
       flex: 2,
-      editable: false,
+      editable: true,
+      search: handleCellFilter
     },
   ];
 
@@ -181,7 +182,7 @@ export const App = () => {
     <Box>
 
       <FullFeaturedCrudGrid _rows={dataGridRows} _columns={dataGridColumns} />
-      
+
     </Box>
   )
 }

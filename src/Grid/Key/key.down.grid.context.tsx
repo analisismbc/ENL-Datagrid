@@ -45,7 +45,7 @@ export const handleKeyDownGridContext = (
 
             event.defaultMuiPrevented = true;
 
-            handleDeleteClickCellMode(rows, setRows, selectedRowId)(event);
+            handleDeleteClickCellMode(rows, setRows, selectedRowId);
 
         }
 

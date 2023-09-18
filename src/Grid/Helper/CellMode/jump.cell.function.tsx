@@ -4,6 +4,9 @@ import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../../Utils";
 import { handleSaveClickCellMode } from "./save.cell.function";
 
+/**
+* @description Handles switching a cell to edit mode when clicked, updating cell modes, and saving changes.
+*/
 export const handleJumpClickCellMode = (
     columns: GridColDef[],
     setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
@@ -18,16 +21,31 @@ export const handleJumpClickCellMode = (
 
     const rowIndex = rows.findIndex((x) => x.id === id);
 
-    // Use setTimeout to ensure it's called once in the next tick
+    /**
+    * @description Use setTimeout to ensure it's called once in the next tick.
+    */
     setTimeout(() => {
 
+        /**
+         * @description Handles saving changes to a cell mode when a user clicks.
+         */
         const updatedCellModes: GridCellModesModel = updateCellModeToView(cellModesModel, id, field);
 
+        /**
+         * @description Sets the next editable cell to edit mode in the current or next row.
+         */
         setNextCellToEditMode(columns, rows, field, updatedCellModes, id, rowIndex);
 
+        /**
+         * @description Updates the cell modes model with the changes made.
+         */
         setCellModesModel(updatedCellModes);
 
+        /**
+         * @description Handles saving changes to a cell value after switching cell modes.
+         */
         handleSaveClickCellMode(params, setRows);
+
 
     }, 0);
 

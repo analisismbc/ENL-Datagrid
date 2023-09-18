@@ -6,6 +6,9 @@ export interface GridCellNewValueParams {
     value: any;
 }
 
+/**
+ * @description Find and return the parameters for an edited cell value between two grid rows.
+ */
 export const findEditedCellValue = (newRow: GridRowModel, oldRow: GridRowModel): GridCellNewValueParams | null => {
 
     for (const key in newRow) {
@@ -18,6 +21,9 @@ export const findEditedCellValue = (newRow: GridRowModel, oldRow: GridRowModel):
         }
     }
 
+    /**
+    * @description Check if the entire newRow object is identical to the oldRow object.
+    */
     if (JSON.stringify(newRow) === JSON.stringify(oldRow)) {
         return {
             id: newRow.id,

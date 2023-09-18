@@ -8,6 +8,9 @@ import {
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { GridCellNewValueParams } from "../../Utils";
 
+/**
+* @description Handles the behavior of switching a cell to edit mode when clicked, updating cell modes, and saving changes in a grid.
+*/
 export const focus = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
@@ -19,7 +22,9 @@ export const focus = (
     const id = existingRow?.id ?? 0;
     const field = params?.field ?? 'id';
 
-    // Update cell modes model
+    /**
+    * @description Update cell modes model.
+    */
     handleCellModesModelChange({
         [id]: {
             ...cellModesModel[id],
@@ -27,15 +32,21 @@ export const focus = (
         },
     });
 
-    // Set focus on the cell
+    /**
+     * @description Set focus on the cell.
+    */
     apiRef.current.setCellFocus(id, field);
 
-    // Find the rowIndex and colIndex
+    /**
+    * @description Set focus on the cell.
+    */
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).indexOf(id);
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
         (column) => column.field === field
     );
 
-    // Scroll to the cell
+    /**
+    * @description Scroll to the cell.
+    */
     apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 };

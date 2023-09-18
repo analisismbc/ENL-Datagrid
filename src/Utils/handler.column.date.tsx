@@ -2,7 +2,7 @@ import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp, gridExpand
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
-import { focus } from "../Grid/Helper/CellMode/focus.cell";
+import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
 import { handleJumpClickCellMode } from "../Grid/Helper/CellMode/jump.cell.function";
 
 export const handleCellFilterDate: Function = (
@@ -18,12 +18,16 @@ export const handleCellFilterDate: Function = (
 ) => {
 
     const rowIndex = rows.findIndex((x) => x.id === params?.id);
-    // Check if the current cell is new
+
+    /**
+    * @description Check if the current cell is new.
+    */
     const isCellNew = rows[rowIndex]?.isNew ?? false;
 
-    // Check if the current cell's value exists in other rows
+    /**
+    * @description Check if the current cell's value exists in other rows.
+    */
     const existingRow = rows.find((row) => {
-        // Check if another row has the same values in both column1 and column2
         const firstDate = row.column2 instanceof Date ? row.column2.getTime() : null;
         const secondDate = params?.value instanceof Date ? params?.value.getTime() : null;
         return row.column1 === rows[rowIndex].column1 && firstDate === secondDate && !row.isNew;
@@ -38,15 +42,22 @@ export const handleCellFilterDate: Function = (
             )
         );
 
+        /**
+        * @description Remove the current cell if it's new.
+        */
         if (isCellNew) {
-            // Remove the current cell if it's new
             setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
 
         }
 
+        /**
+        * @description Delete an entry from cellModesModel based on the params.id.
+        */
         delete cellModesModel[params?.id ?? 0];
 
-        // Use setTimeout to ensure it's called once in the next tick
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
         setTimeout(() => {
 
             focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
@@ -55,8 +66,9 @@ export const handleCellFilterDate: Function = (
 
     } else {
 
-        //delete cellModesModel[params?.id ?? 0];
-
+        /**
+        * @description Calls the default cell event handler when cell event parameters are available..
+        */
         if (params) {
 
             handleJumpClickCellMode(

@@ -9,6 +9,9 @@ import { handleKeyDownPageContext } from "./Key";
 
 const mode = 'cell';
 
+/**
+ * @description Props defining the grid configuration, including rows, columns, and event handlers.
+ */
 interface GridDefinitionProps {
 
     _rows: GridRowsProp<any>;
@@ -25,15 +28,18 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const apiRef = useGridApiRef();
 
-    //----------------------------------------------------------------
-
+    /**
+    * @description Updates the cell modes model with a new configuration.
+    */
     const handleCellModesModelChange = useCallback((newCellModesModel: GridCellModesModel) => {
 
         setCellModesModel({ ...newCellModesModel });
 
     }, [setCellModesModel, cellModesModel]);
 
-    // Use the generateGridColumns function to generate the columns
+    /**
+    * @description Use the generateGridColumns function to generate the columns.
+    */
     const columns: GridColDef<any>[] = generateGridColumns(
         _columns,
         null, //t
@@ -42,7 +48,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         cellModesModel
     );
 
-    // Add a global event listener for keydown events on the whole page for Shift key press
+
+    /**
+    * @description Add a global event listener for keydown events on the whole page for Shift key press.
+    */
     useEffect(() => {
 
         const _handleKeyDownPageContext = (event: KeyboardEvent) => {
@@ -59,7 +68,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         document.addEventListener('keydown', _handleKeyDownPageContext);
 
-        // Clean up the event listener when the component unmounts
+        /** 
+          * @description Cleans up the event listener when the component unmounts. 
+        */
         return () => {
 
             document.removeEventListener('keydown', _handleKeyDownPageContext);
@@ -68,7 +79,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     }, [rows, columns, cellModesModel]);
 
-    //----------------------------------------------------------------
+    /** 
+      * @description This function takes a new row and an old row, finds any edited cell values. 
+    */
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
 
         const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow);
@@ -83,8 +96,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     };
 
-    //-----------------------------------------------------------------
-
+    /** 
+    * @description Handles cell events based on column-specific search functions or a default behavior. 
+    */
     const handleCellEvent = (params: GridCellNewValueParams) => {
 
         const searchFunction: any = _columns.find((column) => column.field.toString() === params?.field);
@@ -93,6 +107,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         if (searchFunction && filter) {
 
+            /**
+              * @description Column-specific event handler (if available) for cell events.
+               */
             filter(
                 handleCellModesModelChange,
                 cellModesModel,
@@ -104,7 +121,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
             );
 
         } else {
-
+            /**
+               * @description Default cell event handler for jumping to a specific behavior.
+                */
             handleJumpClickCellMode(
                 columns,
                 handleCellModesModelChange,
@@ -118,19 +137,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         }
 
     }
-
-    useEffect(() => {
-
-        //console.log('rows-update: ', rows)
-
-    }, [rows])
-
-    useEffect(() => {
-
-        //console.log('cell-mode-update: ', cellModesModel)
-
-    }, [cellModesModel])
-
 
     return (
 

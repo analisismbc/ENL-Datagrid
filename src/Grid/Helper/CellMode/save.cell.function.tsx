@@ -1,19 +1,23 @@
-import { GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridRowId, GridRowsProp } from "@mui/x-data-grid";
-
 import { GridCellNewValueParams } from "../../Utils";
-import { MouseEventHandler } from "react";
+import { GridRowsProp } from "@mui/x-data-grid";
 
+/**
+* @description Handles saving a cell value.
+*/
 export const handleSaveClickCellMode = (
     params: GridCellNewValueParams,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
 ) => {
 
-    const { id, field } = params;
+    const { id, field, value } = params;
 
+    /**
+    * @description Handles saving changes to a cell mode when a user clicks.
+    */
     setRows((rows) =>
         rows.map((row) =>
             row.id === id
-                ? { ...row, [field]: params.value }
+                ? { ...row, [field]: value }
                 : row
         )
     );

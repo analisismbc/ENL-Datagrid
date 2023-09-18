@@ -1,8 +1,8 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
+import { GridCellModesModel, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
-import { focus } from "../Grid/Helper/CellMode/focus.cell";
+import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
 import { handleJumpClickCellMode } from "../Grid/Helper";
 
 export const handleCellFilter: Function = (
@@ -19,10 +19,14 @@ export const handleCellFilter: Function = (
 
     const rowIndex = rows.findIndex((x) => x.id === params?.id);
 
-    // Check if the current cell is new
+    /**
+    * @description Check if the current cell is new.
+    */
     const isCellNew = rows[rowIndex]?.isNew ?? false;
 
-    // Check if the current cell's value exists in other rows
+    /**
+    * @description Check if the current cell's value exists in other rows.
+    */
     const existingRow = rows.find(
 
         (row) => row[params?.field ?? 0] === params?.value && !row.isNew
@@ -38,15 +42,23 @@ export const handleCellFilter: Function = (
 
         );
 
+        /**
+        * @description Remove the current cell if it's new.
+        */
         if (isCellNew) {
 
             setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
 
         }
 
+        /**
+        * @description Delete an entry from cellModesModel based on the params.id.
+        */
         delete cellModesModel[params?.id ?? 0];
 
-        // Use setTimeout to ensure it's called once in the next tick
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
         setTimeout(() => {
 
             focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
@@ -58,6 +70,9 @@ export const handleCellFilter: Function = (
 
         if (params) {
 
+            /**
+            * @description Calls the default cell event handler when cell event parameters are available..
+            */
             handleJumpClickCellMode(
                 columns,
                 handleCellModesModelChange,

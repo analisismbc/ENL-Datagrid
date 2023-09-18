@@ -2,6 +2,9 @@ import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp } from "@mu
 
 import { randomId } from "@mui/x-data-grid-generator";
 
+/**
+ * @description Handle the addition of a new cell and row to a grid when a user clicks.
+ */
 export const handleAddClickCellMode = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
@@ -19,7 +22,9 @@ export const handleAddClickCellMode = (
 
         const id = randomId();
 
-        // Create a new row with dynamic column values
+        /**
+        * @description Create a new row with dynamic column values.
+        */
         const newRow: any = {
 
             id,
@@ -28,7 +33,10 @@ export const handleAddClickCellMode = (
 
         };
 
-        // Initialize each field in the new row
+
+        /**
+        * @description Initialize each field in the new row.
+        */
         columns.forEach((column) => {
 
             newRow[column.field] = column.field === 'id' ? id : '';
@@ -37,7 +45,9 @@ export const handleAddClickCellMode = (
 
         setRows([...rows, newRow]);
 
-        // Create a new cellModesModel for the added row
+        /**
+        * @description Create a new cellModesModel for the added row.
+        */
         const updatedCellModesModel: GridCellModesModel = {
 
             ...cellModesModel,
@@ -46,7 +56,9 @@ export const handleAddClickCellMode = (
 
         };
 
-        // Initialize cell modes for each column in the added row
+        /**
+        * @description Initialize cell modes for each column in the added row.
+        */
         const firstEditableColumnIndex = columns.findIndex(column => column.editable);
 
         columns.forEach((column, index) => {
