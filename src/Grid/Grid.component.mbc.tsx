@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridColDef, GridPaginationModel, GridRowModel, GridRowsProp, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModesModel, GridColDef, GridPaginationModel, GridRowModel, GridRowsProp, GridToolbar, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useState } from "react";
 
@@ -88,6 +88,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     */
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
 
+        console.log('cell-model: ', cellModesModel);
+
         const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow);
 
         if (params) {
@@ -174,6 +176,12 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                     width: '100%',
                     height: '50vh', boxShadow: 0,
                     padding: '0.5vw'
+                }}
+                slots={{ toolbar: GridToolbar }}
+                slotProps={{
+                    toolbar: {
+                        showQuickFilter: true,
+                    },
                 }}
                 //onRowClick={_handleRowClick}
                 columnVisibilityModel={{

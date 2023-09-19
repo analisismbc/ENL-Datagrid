@@ -39,17 +39,18 @@ export const focus = (
     });
 
     /**
-     * @description Set focus on the cell.
-    */
-    apiRef.current.setCellFocus(id, field);
-
-    /**
-    * @description Set focus on the cell.
-    */
+     * @description Finds the row and column indices based on the provided row ID and field name.
+     */
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).indexOf(id);
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
         (column) => column.field === field
     );
+
+    /**
+     * @description Set focus on the cell.
+    */
+    apiRef.current.setCellFocus(id, field);
+
 
     /**
     * @description Scroll to the cell.

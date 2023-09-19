@@ -46,7 +46,6 @@ export const handleJumpClickCellMode = (
          */
         handleSaveClickCellMode(params, setRows);
 
-
     }, 0);
 
 };

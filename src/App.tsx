@@ -94,34 +94,34 @@ export const App = () => {
 
   const dataGridRows = [];
 
-  const getRandomDate = (start: Date, end: Date) => {
-    // Calculate the time range between the start and end dates in milliseconds
+  function getRandomDate(start: Date, end: Date) {
     const timeRange = end.getTime() - start.getTime();
-
-    // Generate a random time within the time range and add it to the start date
     const randomTime = Math.random() * timeRange;
     const randomDate = new Date(start.getTime() + randomTime);
-
-    // Set the time of the random date to midnight (00:00:00)
     randomDate.setHours(0, 0, 0, 0);
-
     return randomDate;
   }
+
+  const countries = ['Brazil', 'Spain', 'United Kingdom'];
 
   const startDate = new Date('01/01/2000'); // Adjust the start date as needed
   const endDate = new Date('12/31/2023'); // Adjust the end date as needed
 
-  for (let i = 1; i <= 10000; i++) {
+  for (let i = 1; i <= 100000; i++) {
+    const randomIndex = Math.floor(Math.random() * countries.length);
+    const randomCountry = countries[randomIndex];
+
     dataGridRows.push({
       id: i,
       column1: `Column 1 - Row ${i}`,
       column2: getRandomDate(startDate, endDate),
-      column3: `Spain`,
+      column3: randomCountry, // Randomly select a country
       column4: i * 100,
       column5: i % 2 === 0, // Alternating true and false
       column6: `Column 6 - Row ${i}`,
     });
   }
+
 
   return (
     <Box>
