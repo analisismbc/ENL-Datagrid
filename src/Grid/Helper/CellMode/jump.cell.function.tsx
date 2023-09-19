@@ -5,7 +5,7 @@ import { GridCellNewValueParams } from "../../Utils";
 import { handleSaveClickCellMode } from "./save.cell.function";
 
 /**
-* @description Handles switching a cell to edit mode when clicked, updating cell modes, and saving changes.
+* @description Handles switching a cell to edit mode when press enter, updating cell modes, and saving changes.
 */
 export const handleJumpClickCellMode = (
     columns: GridColDef[],
@@ -27,7 +27,7 @@ export const handleJumpClickCellMode = (
     setTimeout(() => {
 
         /**
-         * @description Handles saving changes to a cell mode when a user clicks.
+         * @description Handles saving changes to a cell mode when a user press enter.
          */
         const updatedCellModes: GridCellModesModel = updateCellModeToView(cellModesModel, id, field);
 

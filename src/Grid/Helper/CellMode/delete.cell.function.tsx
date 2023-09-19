@@ -1,7 +1,7 @@
 import { GridRowId, GridRowsProp } from "@mui/x-data-grid";
 
 /**
- * @description Handle the removal of a cell in a grid when clicked. 
+ * @description Handle the removal of a cell in a grid when press enter. 
  */
 export const handleDeleteClickCellMode = (
     rows: GridRowsProp<any>,

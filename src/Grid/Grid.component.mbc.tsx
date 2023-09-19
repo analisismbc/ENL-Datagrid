@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridColDef, GridRowModel, GridRowsProp, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModesModel, GridColDef, GridPaginationModel, GridRowModel, GridRowsProp, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useState } from "react";
 
@@ -26,6 +26,11 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
 
+    const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+        pageSize: 100,
+        page: 0,
+    });
+
     const apiRef = useGridApiRef();
 
     /**
@@ -47,7 +52,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         handleCellModesModelChange,
         cellModesModel
     );
-
 
     /**
     * @description Add a global event listener for keydown events on the whole page for Shift key press.
@@ -97,7 +101,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     };
 
     /** 
-    * @description Handles cell events based on column-specific search functions or a default behavior. 
+    *@description Handles cell events based on column-specific search functions or a default behavior. 
     */
     const handleCellEvent = (params: GridCellNewValueParams) => {
 
@@ -108,8 +112,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         if (searchFunction && filter) {
 
             /**
-              * @description Column-specific event handler (if available) for cell events.
-               */
+            * @description Column-specific event handler (if available) for cell events.
+            */
             filter(
                 handleCellModesModelChange,
                 cellModesModel,
@@ -117,13 +121,16 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 rows,
                 setRows,
                 columns,
-                apiRef
+                apiRef,
+                paginationModel,
+                setPaginationModel
             );
 
         } else {
+
             /**
-               * @description Default cell event handler for jumping to a specific behavior.
-                */
+            * @description Default cell event handler for jumping to a specific behavior.
+            */
             handleJumpClickCellMode(
                 columns,
                 handleCellModesModelChange,
@@ -160,6 +167,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}
                 onProcessRowUpdateError={(error) => { console.error("Error during row update:", error) }}
+                paginationModel={paginationModel}
+                onPaginationModelChange={setPaginationModel}
                 apiRef={apiRef}
                 sx={{
                     width: '100%',

@@ -3,7 +3,7 @@ import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp } from "@mu
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
- * @description Handle the addition of a new cell and row to a grid when a user clicks.
+ * @description Handle the addition of a new cell and row to a grid when a user press enter.
  */
 export const handleAddClickCellMode = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
@@ -28,7 +28,6 @@ export const handleAddClickCellMode = (
         const newRow: any = {
 
             id,
-
             isNew: true,
 
         };
@@ -51,7 +50,6 @@ export const handleAddClickCellMode = (
         const updatedCellModesModel: GridCellModesModel = {
 
             ...cellModesModel,
-
             [id]: {},
 
         };

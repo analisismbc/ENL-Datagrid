@@ -12,7 +12,7 @@ export const handleSaveClickCellMode = (
     const { id, field, value } = params;
 
     /**
-    * @description Handles saving changes to a cell mode when a user clicks.
+    * @description Handles saving changes to a cell mode when a user press enter.
     */
     setRows((rows) =>
         rows.map((row) =>

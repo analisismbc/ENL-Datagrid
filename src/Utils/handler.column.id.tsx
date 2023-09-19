@@ -1,4 +1,4 @@
-import { GridCellModesModel, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
@@ -13,7 +13,9 @@ export const handleCellFilter: Function = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],
-    apiRef: React.MutableRefObject<GridApiCommunity>
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 
 ) => {
 
@@ -61,7 +63,7 @@ export const handleCellFilter: Function = (
         */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
         }, 0);
 

@@ -1,26 +1,32 @@
 import {
     GridCellModes,
     GridCellModesModel,
+    GridPaginationModel,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { GridCellNewValueParams } from "../../Utils";
+import { pagination } from "./pagination.cell.function";
 
 /**
-* @description Handles the behavior of switching a cell to edit mode when clicked, updating cell modes, and saving changes in a grid.
+* @description Handles the behavior of switching a cell to edit mode when press enter, updating cell modes, and saving changes in a grid.
 */
 export const focus = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
     cellModesModel: GridCellModesModel,
     params: GridCellNewValueParams | null,
-    apiRef: React.MutableRefObject<GridApiCommunity>
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
 
     const id = existingRow?.id ?? 0;
     const field = params?.field ?? 'id';
+
+    pagination(paginationModel, setPaginationModel, id);
 
     /**
     * @description Update cell modes model.
@@ -48,5 +54,10 @@ export const focus = (
     /**
     * @description Scroll to the cell.
     */
-    apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+    setTimeout(() => {
+
+        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+
+    }, 100);
+
 };

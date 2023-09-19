@@ -18,7 +18,8 @@ export const App = () => {
       flex: 2,
       type: "text",
       editable: true,
-      //search: handleCellFilter
+      //search: handleCellFilter,
+      id: "column1", // Unique ID for the "Text" column
     },
     {
       field: "column2",
@@ -31,7 +32,8 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
-      search: handleCellFilterDate
+      search: handleCellFilterDate,
+      id: "column2", // Unique ID for the "Date" column
     },
     {
       field: "column3",
@@ -45,6 +47,7 @@ export const App = () => {
       type: 'singleSelect',
       valueOptions: ['United Kingdom', 'Spain', 'Brazil'],
       editable: true,
+      id: "selectColumn", // Unique ID for the "Select" column
     },
     {
       field: "column4",
@@ -57,6 +60,7 @@ export const App = () => {
       flex: 2,
       type: 'number',
       editable: true,
+      id: "numberColumn", // Unique ID for the "Number" column
     },
     {
       field: "column5",
@@ -69,6 +73,7 @@ export const App = () => {
       type: 'boolean',
       flex: 2,
       editable: true,
+      id: "booleanColumn", // Unique ID for the "Boolean" column
     },
     {
       field: "column6",
@@ -80,103 +85,43 @@ export const App = () => {
       headerName: "Text",
       flex: 2,
       editable: true,
-      search: handleCellFilter
+      search: handleCellFilter,
+      id: "nonEditableColumn", // Unique ID for the "Non Editable" column
     },
   ];
 
 
-  const dataGridRows = [
-    {
-      id: 1,
-      column1: "Compiled with two warning",
-      column2: new Date('05/01/1999'),
-      column3: "Brazil",
-      column4: 1250,
-      column5: true,
-      column6: "Value 1",
-    },
-    {
-      id: 2,
-      column1: "Files successfully emitted",
-      column2: new Date('08/08/1990'),
-      column3: "Spain",
-      column4: 2600,
-      column5: true,
-      column6: "Value 2",
-    },
-    {
-      id: 3,
-      column1: "Issues checking in progress...",
-      column2: new Date('10/01/2011'),
-      column3: "Spain",
-      column4: 7800,
-      column5: false,
-      column6: "Value 3",
-    },
-    {
-      id: 4,
-      column1: "No issues found.",
-      column2: new Date('01/11/2023'),
-      column3: "Brazil",
-      column4: 1520,
-      column5: true,
-      column6: "Value 4",
-    },
-    {
-      id: 5,
-      column1: "Grid/Key/key.down.page.context.tsx",
-      column2: new Date('05/07/2006'),
-      column3: "Brazil",
-      column4: 5999,
-      column5: false,
-      column6: "Value 5",
-    },
-    {
-      id: 6,
-      column1: "Value 6",
-      column2: new Date('05/01/1999'),
-      column3: "Brazil",
-      column4: 5999,
-      column5: true,
-      column6: "Value 6",
-    },
-    {
-      id: 7,
-      column1: "Value 7",
-      column2: new Date('05/01/1999'),
-      column3: "Spain",
-      column4: 5999,
-      column5: true,
-      column6: "Value 7",
-    },
-    {
-      id: 8,
-      column1: "Value 8",
-      column2: new Date('05/01/1999'),
-      column3: "United Kingdom",
-      column4: 5999,
-      column5: true,
-      column6: "Value 8",
-    },
-    {
-      id: 9,
-      column1: "Value 9",
-      column2: new Date('05/01/1999'),
-      column3: "United Kingdom",
-      column4: 5999,
-      column5: true,
-      column6: "Value 9",
-    },
-    {
-      id: 10,
-      column1: "Value 10",
-      column2: new Date('05/01/1999'),
-      column3: "Spain",
-      column4: 5999,
-      column5: true,
-      column6: "Value 10",
-    },
-  ];
+
+  const dataGridRows = [];
+
+  const getRandomDate = (start: Date, end: Date) => {
+    // Calculate the time range between the start and end dates in milliseconds
+    const timeRange = end.getTime() - start.getTime();
+
+    // Generate a random time within the time range and add it to the start date
+    const randomTime = Math.random() * timeRange;
+    const randomDate = new Date(start.getTime() + randomTime);
+
+    // Set the time of the random date to midnight (00:00:00)
+    randomDate.setHours(0, 0, 0, 0);
+
+    return randomDate;
+  }
+
+  const startDate = new Date('01/01/2000'); // Adjust the start date as needed
+  const endDate = new Date('12/31/2023'); // Adjust the end date as needed
+
+  for (let i = 1; i <= 10000; i++) {
+    dataGridRows.push({
+      id: i,
+      column1: `Column 1 - Row ${i}`,
+      column2: getRandomDate(startDate, endDate),
+      column3: `Spain`,
+      column4: i * 100,
+      column5: i % 2 === 0, // Alternating true and false
+      column6: `Column 6 - Row ${i}`,
+    });
+  }
 
   return (
     <Box>

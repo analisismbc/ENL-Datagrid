@@ -1,4 +1,4 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
@@ -13,7 +13,9 @@ export const handleCellFilterDate: Function = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],
-    apiRef: React.MutableRefObject<GridApiCommunity>
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 
 ) => {
 
@@ -28,11 +30,14 @@ export const handleCellFilterDate: Function = (
     * @description Check if the current cell's value exists in other rows.
     */
     const existingRow = rows.find((row) => {
-        const firstDate = row.column2 instanceof Date ? row.column2.getTime() : null;
-        const secondDate = params?.value instanceof Date ? params?.value.getTime() : null;
-        return row.column1 === rows[rowIndex].column1 && firstDate === secondDate && !row.isNew;
-    });
 
+        const firstDate = row.column2 instanceof Date ? row.column2.getTime() : null;
+
+        const secondDate = params?.value instanceof Date ? params?.value.getTime() : null;
+
+        return row.column1 === rows[rowIndex].column1 && firstDate === secondDate && !row.isNew;
+
+    });
 
     if (existingRow) {
 
@@ -60,7 +65,7 @@ export const handleCellFilterDate: Function = (
         */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef);
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
         }, 0);
 
