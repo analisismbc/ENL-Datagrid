@@ -18,7 +18,7 @@ export const App = () => {
       flex: 2,
       type: "text",
       editable: true,
-      search: handleCellFilter,
+      //search: handleCellFilter,
       id: "column1", // Unique ID for the "Text" column
     },
     {
@@ -32,7 +32,7 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
-      //search: handleCellFilterDate,
+      search: handleCellFilterDate,
       id: "column2", // Unique ID for the "Date" column
     },
     {
