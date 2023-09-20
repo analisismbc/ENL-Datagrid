@@ -32,6 +32,6 @@ export const findEditedCellValue = (newRow: GridRowModel, oldRow: GridRowModel):
         };
     }
 
-    return null; // Ningún cambio detectado
+    return null;
 };
 

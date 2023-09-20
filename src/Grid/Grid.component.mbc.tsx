@@ -27,7 +27,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
 
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-        pageSize: 100,
+        pageSize: 25,
         page: 0,
     });
 
@@ -40,7 +40,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         setCellModesModel({ ...newCellModesModel });
 
-    }, [setCellModesModel, cellModesModel]);
+    }, [setCellModesModel]);
 
     /**
     * @description Use the generateGridColumns function to generate the columns.
@@ -66,7 +66,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 columns,
                 handleCellModesModelChange,
                 cellModesModel,
-                mode);
+                mode,
+                apiRef,
+                paginationModel,
+                setPaginationModel);
 
         };
 
@@ -87,8 +90,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
       * @description This function takes a new row and an old row, finds any edited cell values. 
     */
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
-
-        console.log('cell-model: ', cellModesModel);
 
         const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow);
 
@@ -131,7 +132,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         } else {
 
             /**
-            * @description Default cell event handler for jumping to a specific behavior.
+            * @description Default cell event handler for jumping to the next cell.
             */
             handleJumpClickCellMode(
                 columns,

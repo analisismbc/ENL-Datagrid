@@ -1,10 +1,12 @@
 import {
     GridCellModesModel,
     GridCellParams,
+    GridPaginationModel,
     GridRowModesModel,
     GridRowsProp,
 } from "@mui/x-data-grid";
 
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { handleAddClickCellMode } from "../Helper/CellMode/add.cell.function";
 
 export const handleKeyDownPageContext = (
@@ -14,12 +16,15 @@ export const handleKeyDownPageContext = (
     columns: any,
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
-    editionMode: string
+    editionMode: string,
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
 
     const handleInsertKey = () => {
 
-        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns)();
+        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel);
 
     };
 

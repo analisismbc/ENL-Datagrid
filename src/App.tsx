@@ -18,7 +18,7 @@ export const App = () => {
       flex: 2,
       type: "text",
       editable: true,
-      //search: handleCellFilter,
+      search: handleCellFilter,
       id: "column1", // Unique ID for the "Text" column
     },
     {
@@ -32,7 +32,7 @@ export const App = () => {
       flex: 2,
       type: "date",
       editable: true,
-      search: handleCellFilterDate,
+      //search: handleCellFilterDate,
       id: "column2", // Unique ID for the "Date" column
     },
     {
@@ -107,7 +107,7 @@ export const App = () => {
   const startDate = new Date('01/01/2000'); // Adjust the start date as needed
   const endDate = new Date('12/31/2023'); // Adjust the end date as needed
 
-  for (let i = 1; i <= 100000; i++) {
+  for (let i = 1; i <= 23; i++) {
     const randomIndex = Math.floor(Math.random() * countries.length);
     const randomCountry = countries[randomIndex];
 

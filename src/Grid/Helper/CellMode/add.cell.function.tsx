@@ -1,5 +1,6 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
 
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
@@ -11,12 +12,17 @@ export const handleAddClickCellMode = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],
-) => () => {
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
+
+) => {
 
     const isAnyFieldInEditMode = Object.values(cellModesModel)
         .some((fieldModes) => Object.values(fieldModes).some((mode) => mode.mode === "edit"));
 
     const isEditModeActive: boolean = !isAnyFieldInEditMode;
+
 
     if (isEditModeActive) {
 
@@ -31,7 +37,6 @@ export const handleAddClickCellMode = (
             isNew: true,
 
         };
-
 
         /**
         * @description Initialize each field in the new row.
@@ -69,7 +74,31 @@ export const handleAddClickCellMode = (
 
         });
 
+
         handleCellModesModelChange(updatedCellModesModel);
+
+        /**
+        * @description Scroll to the cell.
+        */
+        setTimeout(() => {
+
+            /**
+            * @description Finds the row and column indices based on the provided row ID and field name.
+            */
+            const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).indexOf(id);
+
+            const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
+                (column) => column.field === 'column1'
+            );
+
+            /**
+            * @description Set focus on the cell.
+            */
+            apiRef.current.setCellFocus(id, 'column1');
+
+            apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+
+        }, 100);
 
     }
 
