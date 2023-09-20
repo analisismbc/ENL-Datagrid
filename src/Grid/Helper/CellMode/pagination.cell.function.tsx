@@ -5,6 +5,8 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 */
 export const pagination = (paginationModel: GridPaginationModel, setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>, index: number) => {
 
+    console.log({ paginationModel, setPaginationModel, index })
+
     /**
     * @description Calculate the page based on the index.
     */

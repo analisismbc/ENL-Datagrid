@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridColDef, GridPaginationModel, GridRowModel, GridRowsProp, GridToolbar, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModesModel, GridColDef, GridEventListener, GridPaginationModel, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useState } from "react";
 
@@ -104,7 +104,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     };
 
     /** 
-    *@description Handles cell events based on column-specific search functions or a default behavior. 
+    * @description Handles cell events based on column-specific search functions or a default behavior. 
     */
     const handleCellEvent = (params: GridCellNewValueParams) => {
 

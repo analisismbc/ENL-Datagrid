@@ -1,12 +1,14 @@
 import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+import { pagination } from "./pagination.cell.function";
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
  * @description Handle the addition of a new cell and row to a grid when a user press enter.
  */
 export const handleAddClickCellMode = (
+
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
     rows: GridRowsProp<any>,
@@ -29,6 +31,24 @@ export const handleAddClickCellMode = (
         const id = randomId();
 
         /**
+        * @description Get the currently visible row based on the scroll position.
+        */
+        const { top } = apiRef.current.getScrollPosition();
+
+        const visibleRowIndex =
+            paginationModel.page > 0 ?
+                Math.floor(top / 35) + paginationModel.pageSize * paginationModel.page >
+                    paginationModel.pageSize * (paginationModel.page + 1) ?
+                    (paginationModel.pageSize * (paginationModel.page + 1)) - 2 :
+                    Math.floor(top / 35) + paginationModel.pageSize * paginationModel.page :
+
+                Math.floor(top / 35 > paginationModel.pageSize ?
+                    paginationModel.pageSize - 2 :
+                    top / 35);
+
+        console.log('visibleRowIndex: ', { visibleRowIndex, page: paginationModel.page, top });
+
+        /**
         * @description Create a new row with dynamic column values.
         */
         const newRow: any = {
@@ -47,7 +67,11 @@ export const handleAddClickCellMode = (
 
         });
 
-        setRows([...rows, newRow]);
+        const updatedRows = [...rows];
+
+        updatedRows.splice(visibleRowIndex, 0, newRow);
+
+        setRows(updatedRows);
 
         /**
         * @description Create a new cellModesModel for the added row.
@@ -74,32 +98,15 @@ export const handleAddClickCellMode = (
 
         });
 
-
         handleCellModesModelChange(updatedCellModesModel);
-
-        /**
-        * @description Scroll to the cell.
-        */
-        setTimeout(() => {
-
-            /**
-            * @description Finds the row and column indices based on the provided row ID and field name.
-            */
-            const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).indexOf(id);
-
-            const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
-                (column) => column.field === 'column1'
-            );
-
-            /**
-            * @description Set focus on the cell.
-            */
-            apiRef.current.setCellFocus(id, 'column1');
-
-            apiRef.current.scrollToIndexes({ rowIndex, colIndex });
-
-        }, 100);
 
     }
 
+};
+
+
+const getCurrentVisibleRow = (apiRef: React.MutableRefObject<GridApiCommunity>) => {
+    const { top } = apiRef.current.getScrollPosition();
+    const visibleRowIndex = Math.floor(top / 30);
+    return visibleRowIndex;
 };

@@ -8,6 +8,7 @@ import { handleSaveClickCellMode } from "./save.cell.function";
 * @description Handles switching a cell to edit mode when press enter, updating cell modes, and saving changes.
 */
 export const handleJumpClickCellMode = (
+
     columns: GridColDef[],
     setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
@@ -15,6 +16,7 @@ export const handleJumpClickCellMode = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     apiRef: React.MutableRefObject<GridApiCommunity>,
+
 ) => {
 
     const { id, field } = params;
@@ -51,12 +53,14 @@ export const handleJumpClickCellMode = (
 };
 
 function setNextCellToEditMode(
+
     columns: GridColDef[],
     rows: readonly any[],
     field: string,
     updatedCellModes: GridCellModesModel,
     id: GridRowId,
     rowIndex: number
+
 ) {
 
     const keys = Object.keys(rows[0]).filter((key) => key !== "isNew");
