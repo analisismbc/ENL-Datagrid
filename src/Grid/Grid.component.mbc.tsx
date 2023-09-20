@@ -27,7 +27,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
 
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-        pageSize: 25,
+        pageSize: 100,
         page: 0,
     });
 
