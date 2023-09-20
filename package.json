@@ -1,7 +1,7 @@
 {
   "name": "grid-mui",
   "version": "0.1.0",
-  "homepage": "https://analisismbc.github.io/ENL-Datagrid/index.html",
+  "homepage": "https://analisismbc.github.io/ENL-Datagrid/index.html/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
