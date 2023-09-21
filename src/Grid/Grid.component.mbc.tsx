@@ -152,7 +152,12 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         <Box sx={{
             textAlign: 'center', marginLeft: '15%', marginTop: '7%',
-            width: '70%', boxShadow: 3, zIndex: 999, borderRadius: '5px'
+            width: '70%', boxShadow: 3, zIndex: 999, borderRadius: '5px',
+            '@media (max-width: 768px)': {
+                marginLeft: '5%',
+                width: '90%',
+                height: '90vh'
+            },
         }}>
 
             <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
@@ -166,9 +171,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 rows={rows}
                 columns={columns}
                 getRowId={(row: any) => row.id}
-                getRowHeight={({ id, densityFactor }: GridRowHeightParams) => {
-                    return 52;
-                }}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}
@@ -178,8 +180,15 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 apiRef={apiRef}
                 sx={{
                     width: '100%',
-                    height: '50vh', boxShadow: 0,
-                    padding: '0.5vw'
+                    height: '50vh',
+                    boxShadow: 0,
+                    padding: '0.5vw',
+                    '@media (max-width: 768px)': {
+                        width: '100%',
+                        height: '80vh',
+                        boxShadow: 0,
+                        padding: '0.5vw',
+                    },
                 }}
                 slots={{ toolbar: GridToolbar }}
                 slotProps={{
