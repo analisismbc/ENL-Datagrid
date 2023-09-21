@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridColDef, GridEventListener, GridPaginationModel, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModesModel, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useState } from "react";
 
@@ -166,6 +166,9 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 rows={rows}
                 columns={columns}
                 getRowId={(row: any) => row.id}
+                getRowHeight={({ id, densityFactor }: GridRowHeightParams) => {
+                    return 45;
+                }}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}

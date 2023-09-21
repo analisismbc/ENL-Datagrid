@@ -37,14 +37,14 @@ export const handleAddClickCellMode = (
 
         const visibleRowIndex =
             paginationModel.page > 0 ?
-                Math.floor(top / 35) + paginationModel.pageSize * paginationModel.page >
+                Math.floor(top / 40) + paginationModel.pageSize * paginationModel.page >
                     paginationModel.pageSize * (paginationModel.page + 1) ?
                     (paginationModel.pageSize * (paginationModel.page + 1)) - 2 :
-                    Math.floor(top / 35) + paginationModel.pageSize * paginationModel.page :
+                    Math.floor(top / 40) + paginationModel.pageSize * paginationModel.page :
 
-                Math.floor(top / 35 > paginationModel.pageSize ?
+                Math.floor(top / 40 > paginationModel.pageSize ?
                     paginationModel.pageSize - 2 :
-                    top / 35);
+                    top / 40);
 
         console.log('visibleRowIndex: ', { visibleRowIndex, page: paginationModel.page, top });
 
