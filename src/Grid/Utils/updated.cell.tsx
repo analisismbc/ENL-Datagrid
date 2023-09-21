@@ -1,7 +1,7 @@
-import { GridRowModel } from "@mui/x-data-grid";
+import { GridCellModesModel, GridColDef, GridRowModel, GridRowsProp } from "@mui/x-data-grid";
 
 export interface GridCellNewValueParams {
-    id: number;
+    id: any;
     field: string;
     value: any;
 }
@@ -21,17 +21,45 @@ export const findEditedCellValue = (newRow: GridRowModel, oldRow: GridRowModel):
         }
     }
 
-    /**
-    * @description Check if the entire newRow object is identical to the oldRow object.
-    */
-    if (JSON.stringify(newRow) === JSON.stringify(oldRow)) {
-        return {
-            id: newRow.id,
-            field: newRow.field,
-            value: newRow.value,
-        };
+    return null;
+};
+
+
+export const findNonEditedCellValue = (cellModesModel: GridCellModesModel, columns: GridColDef<any>[], rows: GridRowsProp<any>): GridCellNewValueParams | null => {
+
+    // Extract the dynamic field name and parent key
+    let field, id: string;
+
+    for (const key in cellModesModel) {
+
+        if (cellModesModel.hasOwnProperty(key)) {
+
+            id = key;
+
+            field = Object.keys(cellModesModel[key])[0];
+
+            const row = rows.find((row) => row.id.toString() === id);
+
+            if (row && row.hasOwnProperty(field)) {
+
+                // Check if the current 'field' is the last column in the 'columns' array
+                const isLastColumn = field === columns[columns.length - 1].field;
+
+                return {
+                    id: id,
+                    field: field,
+                    value: row[field],
+                };
+
+            } else {
+
+                return null;
+
+            }
+
+        }
+
     }
 
     return null;
 };
-

@@ -11,6 +11,8 @@ export const handleSaveClickCellMode = (
 
     const { id, field, value } = params;
 
+    console.log({params});
+
     /**
     * @description Handles saving changes to a cell mode when a user press enter.
     */

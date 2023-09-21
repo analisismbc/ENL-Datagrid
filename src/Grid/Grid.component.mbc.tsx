@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid, GridCellModesModel, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
-import { GridCellNewValueParams, findEditedCellValue } from "./Utils/updated.cell";
+import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useState } from "react";
 
 import { generateGridColumns } from "./Utils/Columns";
@@ -91,7 +91,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     */
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
 
-        const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow);
+        const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow) ?? findNonEditedCellValue(cellModesModel, columns, rows);
 
         if (params) {
 
@@ -151,8 +151,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     return (
 
         <Box sx={{
-            textAlign: 'center', marginLeft: '15%', marginTop: '7%',
-            width: '70%', boxShadow: 3, zIndex: 999, borderRadius: '5px',
+            textAlign: 'center', marginLeft: '12%', marginTop: '7%',
+            width: '80%', boxShadow: 3, zIndex: 999, borderRadius: '5px',
             '@media (max-width: 768px)': {
                 marginLeft: '5%',
                 width: '90%',
@@ -205,3 +205,5 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         </Box>
     );
 }
+
+

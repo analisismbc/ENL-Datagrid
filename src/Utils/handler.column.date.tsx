@@ -19,7 +19,7 @@ export const handleCellFilterDate: Function = (
 
 ) => {
 
-    const rowIndex = rows.findIndex((x) => x.id === params?.id);
+    const rowIndex = rows.findIndex((x) => x.id.toString() === params?.id.toString());
 
     /**
     * @description Check if the current cell is new.
@@ -35,9 +35,11 @@ export const handleCellFilterDate: Function = (
 
         const secondDate = params?.value instanceof Date ? params?.value.getTime() : null;
 
-        return row.column1 === rows[rowIndex].column1 && firstDate === secondDate && !row.isNew;
+        return row.column1 === rows[rowIndex].column1 && firstDate === secondDate && !row.isNew && row.id.toString() !== params?.id.toString();
 
     });
+
+    console.log({ existingRow });
 
     if (existingRow) {
 
@@ -51,14 +53,14 @@ export const handleCellFilterDate: Function = (
         * @description Remove the current cell if it's new.
         */
         if (isCellNew) {
-            setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
+            setRows(rows.filter((row) => row?.id.toString() !== params?.id.toString() ?? 0));
 
         }
 
         /**
         * @description Delete an entry from cellModesModel based on the params.id.
         */
-        delete cellModesModel[params?.id ?? 0];
+        delete cellModesModel[params?.id.toString() ?? 0];
 
         /**
         * @description Use setTimeout to ensure it's called once in the next tick.
@@ -74,6 +76,9 @@ export const handleCellFilterDate: Function = (
         /**
         * @description Calls the default cell event handler when cell event parameters are available..
         */
+
+        console.log({ existingRow });
+
         if (params) {
 
             handleJumpClickCellMode(

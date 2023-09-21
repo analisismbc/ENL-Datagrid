@@ -24,9 +24,12 @@ export const focus = (
 ) => {
 
     const id = existingRow?.id ?? 0;
+
     const field = params?.field ?? 'id';
 
     pagination(paginationModel, setPaginationModel, id);
+
+    console.log({ params, existingRow, id });
 
     /**
     * @description Update cell modes model.
@@ -42,8 +45,11 @@ export const focus = (
      * @description Finds the row and column indices based on the provided row ID and field name.
      */
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).indexOf(id);
+
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
+
         (column) => column.field === field
+
     );
 
     /**

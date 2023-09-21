@@ -21,7 +21,7 @@ export const handleJumpClickCellMode = (
 
     const { id, field } = params;
 
-    const rowIndex = rows.findIndex((x) => x.id === id);
+    const rowIndex = rows.findIndex((x) => x.id.toString() === id.toString());
 
     /**
     * @description Use setTimeout to ensure it's called once in the next tick.
@@ -29,19 +29,14 @@ export const handleJumpClickCellMode = (
     setTimeout(() => {
 
         /**
-         * @description Handles saving changes to a cell mode when a user press enter.
-         */
-        const updatedCellModes: GridCellModesModel = updateCellModeToView(cellModesModel, id, field);
+        * @description Delete an entry from cellModesModel based on the params.id.
+        */
+        delete cellModesModel[params?.id.toString() ?? 0];
 
         /**
          * @description Sets the next editable cell to edit mode in the current or next row.
          */
-        setNextCellToEditMode(columns, rows, field, updatedCellModes, id, rowIndex);
-
-        /**
-         * @description Updates the cell modes model with the changes made.
-         */
-        setCellModesModel(updatedCellModes);
+        setNextCellToEditMode(columns, rows, field, cellModesModel, setCellModesModel, id, rowIndex);
 
         /**
          * @description Handles saving changes to a cell value after switching cell modes.
@@ -57,7 +52,8 @@ function setNextCellToEditMode(
     columns: GridColDef[],
     rows: readonly any[],
     field: string,
-    updatedCellModes: GridCellModesModel,
+    cellModesModel: GridCellModesModel,
+    setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
     id: GridRowId,
     rowIndex: number
 
@@ -77,7 +73,13 @@ function setNextCellToEditMode(
         // Checks if a field is editable.
         if (isFieldEditable(nextField, columns)) {
 
-            updatedCellModes[id][nextField] = { mode: GridCellModes.Edit };
+            if (!cellModesModel[id]) {
+                cellModesModel[id] = {};
+            }
+
+            cellModesModel[id][nextField] = { mode: GridCellModes.Edit };
+
+            setCellModesModel(cellModesModel);
 
             return; // Exit the function after setting the next editable cell to edit mode.
         }
@@ -91,9 +93,9 @@ function setNextCellToEditMode(
 
         const nextRowId = rows[rowIndex + 1].id;
 
-        if (!updatedCellModes[nextRowId]) {
+        if (!cellModesModel[nextRowId]) {
 
-            updatedCellModes[nextRowId] = {};
+            cellModesModel[nextRowId] = {};
 
         }
 
@@ -102,9 +104,11 @@ function setNextCellToEditMode(
 
         if (firstEditableField) {
 
-            updatedCellModes[nextRowId][firstEditableField] = { mode: GridCellModes.Edit };
+            cellModesModel[nextRowId][firstEditableField] = { mode: GridCellModes.Edit };
 
         }
+
+        setCellModesModel(cellModesModel);
 
     }
 
@@ -119,25 +123,6 @@ function isFieldEditable(field: string, columns: GridColDef[]): boolean {
 function findFirstEditableField(fields: string[], columns: GridColDef[]): string | undefined {
 
     return fields.find((field) => isFieldEditable(field, columns));
-
-}
-
-function updateCellModeToView(cellModesModel: GridCellModesModel, id: GridRowId, field: string): GridCellModesModel {
-
-    return {
-
-        ...cellModesModel,
-
-        [id]: {
-
-            ...cellModesModel[id],
-
-            [field]: { mode: GridCellModes.View },
-
-        },
-
-    };
-
 
 }
 

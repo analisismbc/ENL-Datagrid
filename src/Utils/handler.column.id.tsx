@@ -31,7 +31,7 @@ export const handleCellFilter: Function = (
     */
     const existingRow = rows.find(
 
-        (row) => row[params?.field ?? 0] === params?.value && !row.isNew
+        (row) => row[params?.field ?? 0] === params?.value && !row.isNew && row.id.toString() !== params?.id.toString()
 
     );
 
