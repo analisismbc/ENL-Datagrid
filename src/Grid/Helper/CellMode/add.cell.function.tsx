@@ -1,4 +1,4 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
+import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowHeightParams, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from '@mui/x-data-grid';
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { pagination } from "./pagination.cell.function";
@@ -35,18 +35,20 @@ export const handleAddClickCellMode = (
         */
         const { top } = apiRef.current.getScrollPosition();
 
+        const rowHeight = 52;
+
         const visibleRowIndex =
             paginationModel.page > 0 ?
-                Math.floor(top / 40) + paginationModel.pageSize * paginationModel.page >
+                Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page >
                     paginationModel.pageSize * (paginationModel.page + 1) ?
-                    (paginationModel.pageSize * (paginationModel.page + 1)) - 2 :
-                    Math.floor(top / 40) + paginationModel.pageSize * paginationModel.page :
+                    (paginationModel.pageSize * (paginationModel.page + 1)) + 5 :
+                    Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page :
 
-                Math.floor(top / 40 > paginationModel.pageSize ?
-                    paginationModel.pageSize - 2 :
-                    top / 40);
+                Math.ceil(top / rowHeight > paginationModel.pageSize ?
+                    paginationModel.pageSize + 5 :
+                    top / rowHeight);
 
-        console.log('visibleRowIndex: ', { visibleRowIndex, page: paginationModel.page, top });
+        console.log('visibleRowIndex: ', { visibleRowIndex, top });
 
         /**
         * @description Create a new row with dynamic column values.
@@ -102,11 +104,4 @@ export const handleAddClickCellMode = (
 
     }
 
-};
-
-
-const getCurrentVisibleRow = (apiRef: React.MutableRefObject<GridApiCommunity>) => {
-    const { top } = apiRef.current.getScrollPosition();
-    const visibleRowIndex = Math.floor(top / 30);
-    return visibleRowIndex;
 };

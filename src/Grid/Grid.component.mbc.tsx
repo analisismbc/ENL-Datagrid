@@ -167,7 +167,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 columns={columns}
                 getRowId={(row: any) => row.id}
                 getRowHeight={({ id, densityFactor }: GridRowHeightParams) => {
-                    return 45;
+                    return 52;
                 }}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}
