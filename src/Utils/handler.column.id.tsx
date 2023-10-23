@@ -1,9 +1,9 @@
 import { GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp } from "@mui/x-data-grid";
+import { handleAddClickCellMode, handleJumpClickCellMode } from "../Grid/Helper";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { GridCellNewValueParams } from "../Grid/Utils";
 import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
-import { handleJumpClickCellMode } from "../Grid/Helper";
 
 export const handleCellFilter: Function = (
 
@@ -68,7 +68,22 @@ export const handleCellFilter: Function = (
         }, 0);
 
 
-    } else {
+    } else if (!existingRow && !isCellNew) {
+
+        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, { column1: params?.value });
+
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
+        setTimeout(() => {
+
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+
+        }, 0);
+
+    }
+
+    else {
 
         if (params) {
 

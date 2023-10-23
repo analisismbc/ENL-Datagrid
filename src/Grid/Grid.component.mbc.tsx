@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
@@ -33,6 +33,29 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const apiRef = useGridApiRef();
 
+    const [isEnterPressed, setIsEnterPressed] = useState(false);
+
+    // Create a ref for the rows state
+    const rowsRef = useRef(rows);
+
+    // Update the ref whenever the state changes
+    useEffect(() => {
+
+        rowsRef.current = rows;
+
+        console.log({ rows })
+
+    }, [rows]);
+
+
+
+    // Update the ref whenever the state changes
+    useEffect(() => {
+
+        console.log({ cellModesModel })
+
+    }, [cellModesModel]);
+
     /**
     * @description Updates the cell modes model with a new configuration.
     */
@@ -41,6 +64,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         setCellModesModel({ ...newCellModesModel });
 
     }, [setCellModesModel]);
+
 
     /**
     * @description Use the generateGridColumns function to generate the columns.
@@ -72,6 +96,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 setPaginationModel);
 
         };
+
+
 
         document.addEventListener('keydown', _handleKeyDownPageContext);
 
@@ -148,6 +174,30 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     }
 
+    const handleKeyDown = (params: GridCellParams, event: MuiEvent) => {
+
+        console.log({ event: 'key-down', params, rowsRef, cellModesModel });
+
+        //event.defaultMuiPrevented = true;
+
+    }
+
+    const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
+
+        console.log({ event: 'stop', params, rowsRef, cellModesModel });
+
+        //event.defaultMuiPrevented = true;
+
+    }
+
+    const handleCellEditStart = (params: GridCellParams, event: MuiEvent) => {
+
+        console.log({ event: 'start', params, rowsRef, cellModesModel });
+
+        //event.defaultMuiPrevented = true;
+
+    }
+
     return (
 
         <Box sx={{
@@ -169,8 +219,16 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
             <DataGrid
                 editMode={mode}
                 rows={rows}
+                initialState={{
+                    sorting: {
+                        sortModel: [{ field: 'column1', sort: 'asc' }],
+                    },
+                }}
                 columns={columns}
                 getRowId={(row: any) => row.id}
+                onCellKeyDown={handleKeyDown}
+                onCellEditStop={handleCellEditStop}
+                onCellEditStart={handleCellEditStart}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}

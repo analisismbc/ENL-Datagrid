@@ -24,7 +24,7 @@ export const handleKeyDownPageContext = (
 
     const handleInsertKey = () => {
 
-        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel);
+        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, null);
 
     };
 

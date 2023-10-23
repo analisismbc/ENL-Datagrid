@@ -17,7 +17,7 @@ export const handleAddClickCellMode = (
     apiRef: React.MutableRefObject<GridApiCommunity>,
     paginationModel: GridPaginationModel,
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
-
+    initializer: Record<string, any> | null,
 ) => {
 
     const isAnyFieldInEditMode = Object.values(cellModesModel)
@@ -48,7 +48,6 @@ export const handleAddClickCellMode = (
                     paginationModel.pageSize + 5 :
                     top / rowHeight);
 
-        console.log('visibleRowIndex: ', { visibleRowIndex, top });
 
         /**
         * @description Create a new row with dynamic column values.
@@ -64,9 +63,11 @@ export const handleAddClickCellMode = (
         * @description Initialize each field in the new row.
         */
         columns.forEach((column) => {
-
-            newRow[column.field] = column.field === 'id' ? id : '';
-
+            if (initializer && initializer.hasOwnProperty(column.field)) {
+                newRow[column.field] = initializer[column.field] || '';
+            } else {
+                newRow[column.field] = column.field === 'id' ? id : '';
+            }
         });
 
         const updatedRows = [...rows];
@@ -101,6 +102,7 @@ export const handleAddClickCellMode = (
         });
 
         handleCellModesModelChange(updatedCellModesModel);
+
 
     }
 

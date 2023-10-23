@@ -113,7 +113,7 @@ export const App = () => {
 
     dataGridRows.push({
       id: i,
-      column1: `Column 1 - Row ${i}`,
+      column1: `Row ${i}`,
       column2: getRandomDate(startDate, endDate),
       column3: randomCountry, // Randomly select a country
       column4: i * 100,
