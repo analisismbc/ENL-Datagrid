@@ -43,8 +43,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         rowsRef.current = rows;
 
-        console.log({ rows })
-
     }, [rows]);
 
 
@@ -174,29 +172,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     }
 
-    const handleKeyDown = (params: GridCellParams, event: MuiEvent) => {
-
-        console.log({ event: 'key-down', params, rowsRef, cellModesModel });
-
-        //event.defaultMuiPrevented = true;
-
-    }
-
-    const handleCellEditStop = (params: GridCellParams, event: MuiEvent) => {
-
-        console.log({ event: 'stop', params, rowsRef, cellModesModel });
-
-        //event.defaultMuiPrevented = true;
-
-    }
-
-    const handleCellEditStart = (params: GridCellParams, event: MuiEvent) => {
-
-        console.log({ event: 'start', params, rowsRef, cellModesModel });
-
-        //event.defaultMuiPrevented = true;
-
-    }
 
     return (
 
@@ -212,23 +187,15 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
 
-                {`MODE: ${mode.toUpperCase()}`}
+                {`Mode: ${mode.toUpperCase()}`}
 
             </Typography>
 
             <DataGrid
                 editMode={mode}
                 rows={rows}
-                initialState={{
-                    sorting: {
-                        sortModel: [{ field: 'column1', sort: 'asc' }],
-                    },
-                }}
                 columns={columns}
                 getRowId={(row: any) => row.id}
-                onCellKeyDown={handleKeyDown}
-                onCellEditStop={handleCellEditStop}
-                onCellEditStart={handleCellEditStart}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}
@@ -254,7 +221,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                         showQuickFilter: true,
                     },
                 }}
-                //onRowClick={_handleRowClick}
                 columnVisibilityModel={{
                     actions: false,
                 }}

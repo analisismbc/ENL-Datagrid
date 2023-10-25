@@ -29,8 +29,6 @@ export const focus = (
 
     pagination(paginationModel, setPaginationModel, id);
 
-    console.log({ params, existingRow, id });
-
     /**
     * @description Update cell modes model.
     */

@@ -31,18 +31,91 @@ export const handleCellFilter: Function = (
     */
     const existingRow = rows.find(
 
-        (row) => row[params?.field ?? 0] === params?.value && !row.isNew && row.id.toString() !== params?.id.toString()
+        (row) => row[params?.field ?? 0] === params?.value && !row.isNew
 
     );
 
-    if (existingRow) {
+    /**
+    * @description Register exist and is not new.
+    */
+    if (existingRow && !isCellNew) {
 
+        console.log('(1)');
 
         setRows((rows) =>
 
             rows.map((row) => (row.id === existingRow.id ? { ...existingRow, isNew: false, ignoreModifications: true } : row))
 
         );
+
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
+        setTimeout(() => {
+
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+
+        }, 0);
+
+
+    }
+
+    /**
+    * @description Register does not exist and is not new.
+    */
+    else if (!existingRow && !isCellNew) {
+
+        console.log('(2)');
+
+        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, { column1: params?.value });
+
+    }
+
+    /**
+    * @description Register does not exist and is new.
+    */
+    else if (!existingRow && isCellNew) {
+
+        console.log('(3)');
+
+        setTimeout(() => {
+
+            if (params) {
+
+                /**
+                * @description Calls the default cell event handler when cell event parameters are available..
+                */
+                handleJumpClickCellMode(
+                    columns,
+                    handleCellModesModelChange,
+                    cellModesModel,
+                    params,
+                    rows,
+                    setRows,
+                    apiRef
+                )
+
+            }
+
+        }, 0);
+
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
+        setTimeout(() => {
+
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+
+        }, 0);
+
+    }
+
+    /**
+* @description Register does not exist and is new.
+*/
+    else if (existingRow && isCellNew) {
+
+        console.log('(4)');
 
         /**
         * @description Remove the current cell if it's new.
@@ -54,11 +127,6 @@ export const handleCellFilter: Function = (
         }
 
         /**
-        * @description Delete an entry from cellModesModel based on the params.id.
-        */
-        delete cellModesModel[params?.id ?? 0];
-
-        /**
         * @description Use setTimeout to ensure it's called once in the next tick.
         */
         setTimeout(() => {
@@ -67,41 +135,6 @@ export const handleCellFilter: Function = (
 
         }, 0);
 
-
-    } else if (!existingRow && !isCellNew) {
-
-        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, { column1: params?.value });
-
-        /**
-        * @description Use setTimeout to ensure it's called once in the next tick.
-        */
-        setTimeout(() => {
-
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
-
-        }, 0);
-
-    }
-
-    else {
-
-        if (params) {
-
-            /**
-            * @description Calls the default cell event handler when cell event parameters are available..
-            */
-            handleJumpClickCellMode(
-                columns,
-                handleCellModesModelChange,
-                cellModesModel,
-                params,
-                rows,
-                setRows,
-                apiRef
-            )
-
-        }
 
     }
 };
-

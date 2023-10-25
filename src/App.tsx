@@ -85,7 +85,6 @@ export const App = () => {
       headerName: "Text",
       flex: 2,
       editable: true,
-      search: handleCellFilter,
       id: "nonEditableColumn", // Unique ID for the "Non Editable" column
     },
   ];
@@ -107,7 +106,7 @@ export const App = () => {
   const startDate = new Date('01/01/2000'); // Adjust the start date as needed
   const endDate = new Date('12/31/2023'); // Adjust the end date as needed
 
-  for (let i = 1; i <= 100000; i++) {
+  for (let i = 1; i <= 10000; i++) {
     const randomIndex = Math.floor(Math.random() * countries.length);
     const randomCountry = countries[randomIndex];
 
