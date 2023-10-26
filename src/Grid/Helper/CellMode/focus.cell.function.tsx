@@ -63,6 +63,6 @@ export const focus = (
 
         apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 
-    }, 100);
+    }, 200);
 
 };
