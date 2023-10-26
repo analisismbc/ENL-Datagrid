@@ -10,7 +10,9 @@ export const pagination = (paginationModel: GridPaginationModel, setPaginationMo
     */
     const rowsPerPage = paginationModel.pageSize || 1;
 
-    const calculatedPage = Math.ceil((index) / rowsPerPage) - 1;
+    const calculatedPage = Math.floor((index) / rowsPerPage);
+
+    console.log({calculatedPage, calc: (index/rowsPerPage)});
 
     /**
     * @description Update the page in the paginationModel.

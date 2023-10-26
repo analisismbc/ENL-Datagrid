@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -27,7 +27,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
 
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-        pageSize: 100,
+        pageSize: 25,
         page: 0,
     });
 
@@ -42,6 +42,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     useEffect(() => {
 
         rowsRef.current = rows;
+
+        console.log({rows})
 
     }, [rows]);
 
@@ -191,10 +193,18 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             </Typography>
 
+            <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
+
+                {`Page: ${paginationModel.page}`}
+
+            </Typography>
+
+
             <DataGrid
                 editMode={mode}
                 rows={rows}
                 columns={columns}
+                rowSelection={false}
                 getRowId={(row: any) => row.id}
                 cellModesModel={cellModesModel}
                 onCellModesModelChange={handleCellModesModelChange}

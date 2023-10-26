@@ -1,3 +1,5 @@
+import { randomInt, randomTraderName } from "@mui/x-data-grid-generator";
+
 import { Box } from "@mui/material";
 import { FullFeaturedCrudGrid } from "./Grid/Grid.component.mbc"
 import { GridColumnHeaderParams } from "@mui/x-data-grid";
@@ -106,13 +108,13 @@ export const App = () => {
   const startDate = new Date('01/01/2000'); // Adjust the start date as needed
   const endDate = new Date('12/31/2023'); // Adjust the end date as needed
 
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= 100; i++) {
     const randomIndex = Math.floor(Math.random() * countries.length);
     const randomCountry = countries[randomIndex];
 
     dataGridRows.push({
       id: i,
-      column1: `Row ${i}`,
+      column1: randomTraderName().toString(),
       column2: getRandomDate(startDate, endDate),
       column3: randomCountry, // Randomly select a country
       column4: i * 100,
