@@ -3,7 +3,7 @@ import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
 import { handleKeyDownPageContext } from "./Key";
@@ -231,10 +231,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 }}
             />
 
-
             <Badge color="primary" badgeContent={paginationModel.page}>
-                <AutoStoriesIcon />
+                <MenuBookIcon />
             </Badge>
+
         </Box>
     );
 }
