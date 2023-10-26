@@ -48,11 +48,9 @@ export const focus = (
 
     );
 
-    console.log({rowIndex, colIndex, id, field});
 
-    
     pagination(paginationModel, setPaginationModel, rowIndex);
-    
+
     /**
      * @description Set focus on the cell.
     */
@@ -66,6 +64,6 @@ export const focus = (
 
         apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 
-    }, 0);
+    }, 500);
 
 };

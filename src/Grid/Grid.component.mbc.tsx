@@ -1,8 +1,9 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Badge, Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
 import { handleKeyDownPageContext } from "./Key";
@@ -43,7 +44,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         rowsRef.current = rows;
 
-        console.log({rows})
+        console.log({ rows })
 
     }, [rows]);
 
@@ -193,12 +194,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             </Typography>
 
-            <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
-
-                {`Page: ${paginationModel.page}`}
-
-            </Typography>
-
 
             <DataGrid
                 editMode={mode}
@@ -236,6 +231,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 }}
             />
 
+
+            <Badge color="primary" badgeContent={paginationModel.page}>
+                <AutoStoriesIcon />
+            </Badge>
         </Box>
     );
 }
