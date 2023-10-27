@@ -55,8 +55,7 @@ export const handleCellFilter: Function = (
 
             focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
-        }, 0);
-
+        }, 500);
 
     }
 

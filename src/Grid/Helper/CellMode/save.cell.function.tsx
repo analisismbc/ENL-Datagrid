@@ -8,7 +8,7 @@ export const handleSaveClickCellMode = (
 
     params: GridCellNewValueParams,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
-    
+
 ) => {
 
     const { id, field, value } = params;

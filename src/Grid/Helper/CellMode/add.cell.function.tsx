@@ -1,7 +1,6 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowHeightParams, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from '@mui/x-data-grid';
+import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp } from '@mui/x-data-grid';
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
-import { pagination } from "./pagination.cell.function";
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
@@ -102,7 +101,6 @@ export const handleAddClickCellMode = (
         });
 
         handleCellModesModelChange(updatedCellModesModel);
-
 
     }
 

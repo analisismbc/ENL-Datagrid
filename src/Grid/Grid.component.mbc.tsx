@@ -3,6 +3,7 @@ import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import FeedIcon from '@mui/icons-material/Feed';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
@@ -234,6 +235,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
             <Badge color="primary" badgeContent={paginationModel.page}>
                 <MenuBookIcon />
             </Badge>
+
+            <Button color="primary" onClick={() => console.log({ rows })} >
+                <FeedIcon />
+            </Button>
 
         </Box>
     );
