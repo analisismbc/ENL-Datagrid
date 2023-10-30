@@ -1,13 +1,13 @@
 import { Badge, Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
+import { handleKeyDownGridContext, handleKeyDownPageContext } from "./Key";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import FeedIcon from '@mui/icons-material/Feed';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
-import { handleKeyDownPageContext } from "./Key";
 
 const mode = 'cell';
 
@@ -78,6 +78,13 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         handleCellModesModelChange,
         cellModesModel
     );
+
+    const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
+
+        handleKeyDownGridContext(params, event, rows, setRows, setCellModesModel, cellModesModel, columns, mode);
+
+    };
+
 
     /**
     * @description Add a global event listener for keydown events on the whole page for Shift key press.
@@ -203,6 +210,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 rowSelection={false}
                 getRowId={(row: any) => row.id}
                 cellModesModel={cellModesModel}
+                onCellKeyDown={handleCellKeyDown}
                 onCellModesModelChange={handleCellModesModelChange}
                 processRowUpdate={processRowUpdate}
                 onProcessRowUpdateError={(error) => { console.error("Error during row update:", error) }}
