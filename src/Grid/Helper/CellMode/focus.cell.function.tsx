@@ -59,7 +59,7 @@ export const focus = (
 
         apiRef.current.scrollToIndexes({ rowIndex: downRowIndex, colIndex });
 
-    }, 0);
+    }, 100);
 
     /**
      * @description Set focus on the cell.
