@@ -56,13 +56,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         cellModesModel
     );
 
-
-    useEffect(() => {
-
-        console.log({ rows });
-
-    }, [rows])
-
     const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
 
         if (Object.keys(cellModesModel).length === 0) {

@@ -20,6 +20,13 @@ export const handleJumpClickCellMode = (
 
     const { id, field } = params;
 
+    setTimeout(() => {
+
+        handleSaveClickCellMode(params, setRows);
+        
+    }, 0);
+
+    
     const rowIndex = rows.findIndex((x) => x.id.toString() === id.toString());
 
     const keys = Object.keys(rows[0]).filter((key) => key !== "isNew");
@@ -46,13 +53,6 @@ export const handleJumpClickCellMode = (
     }
 
     setCellModesModel({});
-
-    setTimeout(() => {
-
-        handleSaveClickCellMode(params, setRows);
-        
-    }, 0);
-
 
 };
 
