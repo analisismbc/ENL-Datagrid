@@ -1,13 +1,13 @@
 import { Badge, Box, Button, Typography } from "@mui/material";
-import { DataGrid, GridCellModes, GridCellModesModel, GridCellParams, GridColDef, GridEventListener, GridPaginationModel, GridRowHeightParams, GridRowModel, GridRowsProp, GridToolbar, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
-import { GridCellNewValueParams, findEditedCellValue, findNonEditedCellValue } from "./Utils/updated.cell";
-import { handleKeyDownGridContext, handleKeyDownPageContext } from "./Key";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp, GridToolbar, GridTreeNode, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
+import { useCallback, useEffect, useState } from "react";
 
 import FeedIcon from '@mui/icons-material/Feed';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import SortIcon from '@mui/icons-material/Sort';
 import { generateGridColumns } from "./Utils/Columns";
 import { handleJumpClickCellMode } from "./Helper/CellMode/jump.cell.function";
+import { handleKeyDownGridContext } from "./Key";
 
 const mode = 'cell';
 
@@ -35,29 +35,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const apiRef = useGridApiRef();
 
-    const [isEnterPressed, setIsEnterPressed] = useState(false);
-
-    // Create a ref for the rows state
-    const rowsRef = useRef(rows);
-
-    // Update the ref whenever the state changes
-    useEffect(() => {
-
-        rowsRef.current = rows;
-
-        console.log({ rows })
-
-    }, [rows]);
-
-
-
-    // Update the ref whenever the state changes
-    useEffect(() => {
-
-        console.log({ cellModesModel })
-
-    }, [cellModesModel]);
-
     /**
     * @description Updates the cell modes model with a new configuration.
     */
@@ -79,75 +56,56 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         cellModesModel
     );
 
-    const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
 
-        handleKeyDownGridContext(params, event, rows, setRows, setCellModesModel, cellModesModel, columns, mode);
-
-    };
-
-
-    /**
-    * @description Add a global event listener for keydown events on the whole page for Shift key press.
-    */
     useEffect(() => {
 
-        const _handleKeyDownPageContext = (event: KeyboardEvent) => {
+        console.log({ rows });
 
-            handleKeyDownPageContext(rows,
-                event,
-                setRows,
-                columns,
-                handleCellModesModelChange,
-                cellModesModel,
-                mode,
-                apiRef,
-                paginationModel,
-                setPaginationModel);
+    }, [rows])
 
-        };
+    const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
 
+        if (Object.keys(cellModesModel).length === 0) {
 
+            const syntheticEvent = event as MuiEvent<any>;
 
-        document.addEventListener('keydown', _handleKeyDownPageContext);
+            const { key } = syntheticEvent;
 
-        /** 
-          * @description Cleans up the event listener when the component unmounts. 
-        */
-        return () => {
+            if (params && key === 'Enter') {
 
-            document.removeEventListener('keydown', _handleKeyDownPageContext);
+                event.defaultMuiPrevented = true;
+            }
 
-        };
-
-    }, [rows, columns, cellModesModel]);
-
-    /** 
-      * @description This function takes a new row and an old row, finds any edited cell values. 
-    */
-    const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
-
-        const params: GridCellNewValueParams | null = findEditedCellValue(newRow, oldRow) ?? findNonEditedCellValue(cellModesModel, columns, rows);
-
-        if (params) {
-
-            handleCellEvent(params);
-
+            handleKeyDownGridContext(
+                params, event, rows, setRows, setCellModesModel, cellModesModel, columns, mode, apiRef, paginationModel, setPaginationModel
+            );
         }
 
-        return newRow;
-
     };
+
+    const handleCellEditStop = useCallback(async (params: GridCellParams<any, unknown, unknown, GridTreeNode>) => {
+        // Use a Promise to wait for the next event loop iteration
+        await new Promise((resolve) => setTimeout(resolve, 10));
+
+        // Now, the params object should have the latest values
+        params.value = apiRef.current.getCellValue(params.id, params.field);
+
+        params.formattedValue = apiRef.current.getCellValue(params.id, params.field);
+
+        handleCellEvent(params);
+
+    }, [apiRef, rows]);
 
     /** 
     * @description Handles cell events based on column-specific search functions or a default behavior. 
     */
-    const handleCellEvent = (params: GridCellNewValueParams) => {
+    const handleCellEvent = (params: GridCellParams) => {
 
-        const searchFunction: any = _columns.find((column) => column.field.toString() === params?.field);
+        const onEditStopFunction: any = _columns.find((column) => column.field.toString() === params?.field);
 
-        const filter: Function = searchFunction?.search;
+        const filter: Function = onEditStopFunction?.onEditStop;
 
-        if (searchFunction && filter) {
+        if (onEditStopFunction && filter) {
 
             /**
             * @description Column-specific event handler (if available) for cell events.
@@ -211,9 +169,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                 getRowId={(row: any) => row.id}
                 cellModesModel={cellModesModel}
                 onCellKeyDown={handleCellKeyDown}
+                onCellEditStop={handleCellEditStop}
                 onCellModesModelChange={handleCellModesModelChange}
-                processRowUpdate={processRowUpdate}
-                onProcessRowUpdateError={(error) => { console.error("Error during row update:", error) }}
                 paginationModel={paginationModel}
                 onPaginationModelChange={setPaginationModel}
                 apiRef={apiRef}
@@ -246,6 +203,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             <Button color="primary" onClick={() => console.log({ rows })} >
                 <FeedIcon />
+            </Button>
+
+            <Button color="primary" onClick={() => console.log({ cellModesModel })} >
+                <SortIcon />
             </Button>
 
         </Box>

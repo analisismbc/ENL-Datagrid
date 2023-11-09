@@ -1,7 +1,6 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector } from "@mui/x-data-grid";
+import { GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
-import { GridCellNewValueParams } from "../Grid/Utils";
 import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
 import { handleJumpClickCellMode } from "../Grid/Helper/CellMode/jump.cell.function";
 
@@ -9,7 +8,7 @@ export const handleCellFilterDate: Function = (
 
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
-    params: GridCellNewValueParams | null,
+    params: GridCellParams ,
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     columns: GridColDef<any>[],

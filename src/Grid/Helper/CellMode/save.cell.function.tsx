@@ -1,12 +1,11 @@
-import { GridCellNewValueParams } from "../../Utils";
-import { GridRowsProp } from "@mui/x-data-grid";
+import { GridCellParams, GridRowsProp } from "@mui/x-data-grid";
 
 /**
 * @description Handles saving a cell value.
 */
 export const handleSaveClickCellMode = (
 
-    params: GridCellNewValueParams,
+    params: GridCellParams,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
 
 ) => {

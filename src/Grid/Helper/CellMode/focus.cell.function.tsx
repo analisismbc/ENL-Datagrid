@@ -1,13 +1,13 @@
 import {
     GridCellModes,
     GridCellModesModel,
+    GridCellParams,
     GridPaginationModel,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
-import { GridCellNewValueParams } from "../../Utils";
 import { pagination } from "./pagination.cell.function";
 
 /**
@@ -17,7 +17,7 @@ export const focus = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
     cellModesModel: GridCellModesModel,
-    params: GridCellNewValueParams | null,
+    params: GridCellParams,
     apiRef: React.MutableRefObject<GridApiCommunity>,
     paginationModel: GridPaginationModel,
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
@@ -30,12 +30,7 @@ export const focus = (
     /**
     * @description Update cell modes model.
     */
-    handleCellModesModelChange({
-        [id]: {
-            ...cellModesModel[id],
-            [field]: { mode: GridCellModes.View },
-        },
-    });
+    handleCellModesModelChange({ });
 
     /**
      * @description Finds the row and column indices based on the provided row ID and field name.
@@ -43,7 +38,7 @@ export const focus = (
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
 
         (index) => index === id,
-        
+
     );
 
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(

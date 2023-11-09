@@ -3,15 +3,17 @@ import {
     GridCellModesModel,
     GridCellParams,
     GridColDef,
-    GridRowModes,
-    GridRowModesModel,
+    GridPaginationModel,
     GridRowsProp,
     MuiEvent,
 } from "@mui/x-data-grid";
 import {
+    handleAddClickCellMode,
     handleDeleteClickCellMode,
-    handleSaveClickCellMode,
+    handleJumpClickCellMode,
 } from "../Helper";
+
+import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 
 export const handleKeyDownGridContext = (
     params: GridCellParams,
@@ -21,7 +23,10 @@ export const handleKeyDownGridContext = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
     columns: GridColDef<any>[],
-    editionMode: string
+    editionMode: string,
+    apiRef: React.MutableRefObject<GridApiCommunity>,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
 
     const selectedRowId = params.id;
@@ -30,13 +35,19 @@ export const handleKeyDownGridContext = (
 
     const handleEnterKey = () => {
 
-        if (cellMode === GridCellModes.Edit) {
+        /**
+        * @description Calls the default cell event handler when cell event parameters are available..
+        */
+        handleJumpClickCellMode(
+            columns,
+            handleCellModesModelChange,
+            cellModesModel,
+            params,
+            rows,
+            setRows,
+            apiRef
+        )
 
-            event.defaultMuiPrevented = true;
-
-            // handleSaveClickCellMode(columns, handleCellModesModelChange, cellModesModel, params, rows)(event);
-
-        }
     };
 
     const handleDeleteKey = () => {
@@ -51,6 +62,11 @@ export const handleKeyDownGridContext = (
 
     };
 
+    const handleInsertKey = () => {
+
+        handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, null);
+
+    };
 
     switch (event.key) {
 
@@ -63,6 +79,12 @@ export const handleKeyDownGridContext = (
         case 'Delete':
 
             handleDeleteKey();
+
+            break;
+
+        case 'Insert':
+
+            handleInsertKey();
 
             break;
 
