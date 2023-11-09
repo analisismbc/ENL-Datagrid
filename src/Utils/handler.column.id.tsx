@@ -58,7 +58,7 @@ export const handleCellFilter: Function = (
 
             focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
-        }, 100);
+        }, 0);
 
 
     }
@@ -83,7 +83,7 @@ export const handleCellFilter: Function = (
 
             handleAddClickCellMode(handleCellModesModelChange, cellModesModel, rows, setRows, columns, apiRef, paginationModel, setPaginationModel, { column1: params?.value });
 
-        }, 500);
+        }, 0);
 
 
     }
@@ -114,7 +114,7 @@ export const handleCellFilter: Function = (
 
             }
 
-        }, 100);
+        }, 0);
 
     }
 
@@ -141,7 +141,7 @@ export const handleCellFilter: Function = (
 
             focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
-        }, 100);
+        }, 0);
 
 
     }
@@ -171,6 +171,6 @@ export const handleCellFilter: Function = (
 
             }
 
-        }, 100);
+        }, 0);
     }
 };
