@@ -35,6 +35,7 @@ export const handleKeyDownGridContext = (
 
     const handleEnterKey = () => {
 
+        console.log('enter-listener');
         /**
         * @description Calls the default cell event handler when cell event parameters are available..
         */

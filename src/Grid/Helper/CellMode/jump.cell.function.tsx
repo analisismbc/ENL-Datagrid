@@ -38,7 +38,7 @@ export const handleJumpClickCellMode = (
 
     );
 
-    const keys = Object.keys(rows[0]).filter((key) => key !== "isNew");
+    const keys = Object.keys(rows[0]).filter((key) => key !== "isNew" && key !== "actions");
 
     const fieldIndex = keys.indexOf(field);
 

@@ -58,6 +58,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
 
+        console.log('key-down',{params, event});
+
         if (Object.keys(cellModesModel).length === 0) {
 
             const syntheticEvent = event as MuiEvent<any>;
