@@ -3,6 +3,7 @@ import {
     GridCellModesModel,
     GridCellParams,
     GridPaginationModel,
+    gridExpandedRowCountSelector,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
@@ -30,7 +31,7 @@ export const focus = (
     /**
     * @description Update cell modes model.
     */
-    handleCellModesModelChange({ });
+    handleCellModesModelChange({});
 
     /**
      * @description Finds the row and column indices based on the provided row ID and field name.
@@ -54,9 +55,11 @@ export const focus = (
     */
     setTimeout(() => {
 
-        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+        const downRowIndex = Math.min(gridExpandedRowCountSelector(apiRef) - 1, rowIndex + 1);
 
-    }, 500);
+        apiRef.current.scrollToIndexes({ rowIndex: downRowIndex, colIndex });
+
+    }, 0);
 
     /**
      * @description Set focus on the cell.
