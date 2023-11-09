@@ -85,18 +85,16 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const handleCellEditStop = useCallback(async (params: GridCellParams<any, unknown, unknown, GridTreeNode>) => {
         // Use a Promise to wait for the next event loop iteration
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 25));
 
         // Now, the params object should have the latest values
         params.value = apiRef.current.getCellValue(params.id, params.field);
 
         params.formattedValue = apiRef.current.getCellValue(params.id, params.field);
 
-        console.log({ params });
-
         handleCellEvent(params);
 
-    }, [apiRef, rows]);
+    }, [apiRef, rows, cellModesModel]);
 
     /** 
     * @description Handles cell events based on column-specific search functions or a default behavior. 
