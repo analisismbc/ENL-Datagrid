@@ -144,6 +144,11 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
     }
 
 
+    const deploymentDate = process.env.REACT_APP_DEPLOYMENT_DATE;
+    console.log(`Deployment date: ${deploymentDate}`);
+
+
+
     return (
 
         <Box sx={{
@@ -158,7 +163,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
 
-                {`Deploy: ${new Date()}`}
+                {`Deploy: ${process.env.REACT_APP_DEPLOYMENT_DATE}`}
 
             </Typography>
 
