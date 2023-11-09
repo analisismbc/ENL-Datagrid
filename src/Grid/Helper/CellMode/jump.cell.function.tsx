@@ -38,13 +38,17 @@ export const handleJumpClickCellMode = (
 
     );
 
-    const keys = Object.keys(rows[0]).filter((key) => key !== "isNew" && key !== "actions");
+    const keys = Object.keys(rows[0]).filter((key) => key !== "isNew" && key !== "actions" && key !== "ignoreModifications");
 
     const fieldIndex = keys.indexOf(field);
 
     let nextFieldIndex = fieldIndex + 1;
 
+    console.log({ keys, fieldIndex, nextFieldIndex, column: Object.keys(rows[0]).filter((key) => key !== "isNew") })
+
     while (nextFieldIndex < keys.length) {
+
+        console.log('jump-one', { nextFieldIndex, length: keys.length });
 
         const nextField = keys[nextFieldIndex];
 
@@ -54,6 +58,8 @@ export const handleJumpClickCellMode = (
     }
 
     if (rowIndex < rows.length - 1) {
+
+        console.log('jump-two', { rowIndex });
 
         const nextRowId = gridExpandedSortedRowIdsSelector(apiRef)[rowIndex + 1];
 

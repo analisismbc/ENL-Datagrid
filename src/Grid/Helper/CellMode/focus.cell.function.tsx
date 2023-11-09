@@ -55,9 +55,7 @@ export const focus = (
     */
     setTimeout(() => {
 
-        const downRowIndex = Math.min(gridExpandedRowCountSelector(apiRef) - 1, rowIndex + 1);
-
-        apiRef.current.scrollToIndexes({ rowIndex: downRowIndex, colIndex });
+        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 
     }, 500);
 

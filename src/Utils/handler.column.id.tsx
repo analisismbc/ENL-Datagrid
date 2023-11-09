@@ -18,7 +18,7 @@ export const handleCellFilter: Function = (
 
 ) => {
 
-    console.log('rows-before-checking', {rows})
+    console.log('rows-before-checking', { rows })
 
     const rowIndex = rows.findIndex((x) => x.id === params?.id);
 
@@ -39,7 +39,7 @@ export const handleCellFilter: Function = (
 
     const existingRowIndex = existingRow ? rows.indexOf(existingRow) : -1;
 
-    console.log({existingRow, params})
+    console.log({ existingRow, params })
 
     /**
     * @description Register exist and is not new.
@@ -124,25 +124,28 @@ export const handleCellFilter: Function = (
     /**
 * @description Register does not exist and is new.
 */
-    else if (existingRow && isCellNew) {
+    else if (existingRow && isCellNew && existingRowIndex === rowIndex) {
 
         console.log('(4)');
 
-        /**
-        * @description Remove the current cell if it's new.
-        */
-        if (isCellNew) {
-
-            setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
-
-        }
-
-        /**
-        * @description Use setTimeout to ensure it's called once in the next tick.
-        */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+            if (params) {
+
+                /**
+                * @description Calls the default cell event handler when cell event parameters are available..
+                */
+                handleJumpClickCellMode(
+                    columns,
+                    handleCellModesModelChange,
+                    cellModesModel,
+                    params,
+                    rows,
+                    setRows,
+                    apiRef
+                )
+
+            }
 
         }, 0);
 
@@ -175,5 +178,29 @@ export const handleCellFilter: Function = (
             }
 
         }, 0);
+    }
+    else if (existingRow && isCellNew && existingRowIndex !== rowIndex) {
+
+        console.log('(6)');
+
+        /**
+        * @description Remove the current cell if it's new.
+        */
+        if (isCellNew) {
+
+            setRows(rows.filter((row) => row?.id !== params?.id ?? 0));
+
+        }
+
+        /**
+        * @description Use setTimeout to ensure it's called once in the next tick.
+        */
+        setTimeout(() => {
+
+            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+
+        }, 0);
+
+
     }
 };
