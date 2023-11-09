@@ -65,6 +65,12 @@ export const handleAddClickCellMode = (
 
         const firstColumn = columns[0];
 
-        apiRef.current.setCellFocus(id, firstColumn.field);
+        setTimeout(() => {
+
+            apiRef.current.setCellFocus(id, firstColumn.field);
+
+        }, 10);
+
+
     }
 };
