@@ -18,6 +18,7 @@ export const handleCellFilter: Function = (
 
 ) => {
 
+    console.log('rows-before-checking', {rows})
 
     const rowIndex = rows.findIndex((x) => x.id === params?.id);
 
@@ -32,11 +33,13 @@ export const handleCellFilter: Function = (
 
     const existingRow = rows.find(
 
-        (row) => row[params?.field ?? 0] === params?.value && !row.isNew
+        (row) => row[params?.field ?? 0] === params?.value
 
     );
 
     const existingRowIndex = existingRow ? rows.indexOf(existingRow) : -1;
+
+    console.log({existingRow, params})
 
     /**
     * @description Register exist and is not new.

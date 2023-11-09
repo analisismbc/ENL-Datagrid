@@ -87,7 +87,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
         handleCellEvent(params);
 
-    }, [apiRef, rows, cellModesModel]);
+    }, [apiRef, rows]);
 
     /** 
     * @description Handles cell events based on column-specific search functions or a default behavior. 
@@ -133,12 +133,6 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
         }
 
     }
-
-
-    const deploymentDate = process.env.REACT_APP_DEPLOYMENT_DATE;
-    console.log(`Deployment date: ${deploymentDate}`);
-
-
 
     return (
 
