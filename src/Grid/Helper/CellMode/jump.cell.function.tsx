@@ -1,13 +1,20 @@
-import { GridCellModesModel, GridCellParams, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import {
+    GridCellModesModel,
+    GridCellParams,
+    GridColDef,
+    GridRowsProp,
+    gridExpandedRowCountSelector,
+    gridExpandedSortedRowIdsSelector,
+    gridVisibleColumnDefinitionsSelector,
+} from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { handleSaveClickCellMode } from "./save.cell.function";
 
 /**
-* @description Handles switching a cell to edit mode when press enter, updating cell modes, and saving changes.
-*/
+ * @description Handles switching a cell to edit mode when press enter, updating cell modes, and saving changes.
+ */
 export const handleJumpClickCellMode = (
-
     columns: GridColDef[],
     setCellModesModel: (updatedCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
@@ -15,19 +22,21 @@ export const handleJumpClickCellMode = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     apiRef: React.MutableRefObject<GridApiCommunity>,
-
 ) => {
-
     const { id, field } = params;
 
     setTimeout(() => {
 
         handleSaveClickCellMode(params, setRows);
-        
+
     }, 0);
 
-    
-    const rowIndex = rows.findIndex((x) => x.id.toString() === id.toString());
+    // Find the index of the row
+    const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
+
+        (rowId) => rowId.toString() === id.toString()
+
+    );
 
     const keys = Object.keys(rows[0]).filter((key) => key !== "isNew");
 
@@ -42,17 +51,25 @@ export const handleJumpClickCellMode = (
         apiRef.current.setCellFocus(id, nextField);
 
         return;
-
     }
 
     if (rowIndex < rows.length - 1) {
 
-        const nextRowId = rows[rowIndex + 1].id;
+        const nextRowId = gridExpandedSortedRowIdsSelector(apiRef)[rowIndex + 1];
 
         apiRef.current.setCellFocus(nextRowId, columns[0].field);
     }
 
     setCellModesModel({});
 
-};
+    // Scroll to the cell
+    const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
 
+        (column) => column.field === field
+
+    );
+
+    const downRowIndex = Math.min(gridExpandedRowCountSelector(apiRef) - 1, rowIndex + 1);
+
+    apiRef.current.scrollToIndexes({ rowIndex: downRowIndex, colIndex });
+};
