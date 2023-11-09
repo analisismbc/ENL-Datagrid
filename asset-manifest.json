@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/ENL-Datagrid/static/js/main.10ca6e60.js",
+    "main.js": "/ENL-Datagrid/static/js/main.60cc3a89.js",
     "static/js/787.364fd2dc.chunk.js": "/ENL-Datagrid/static/js/787.364fd2dc.chunk.js",
     "index.html": "/ENL-Datagrid/index.html",
-    "main.10ca6e60.js.map": "/ENL-Datagrid/static/js/main.10ca6e60.js.map",
+    "main.60cc3a89.js.map": "/ENL-Datagrid/static/js/main.60cc3a89.js.map",
     "787.364fd2dc.chunk.js.map": "/ENL-Datagrid/static/js/787.364fd2dc.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.10ca6e60.js"
+    "static/js/main.60cc3a89.js"
   ]
 }
