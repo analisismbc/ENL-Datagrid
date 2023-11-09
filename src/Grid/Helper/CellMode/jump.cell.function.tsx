@@ -1,6 +1,7 @@
 import { GridCellModesModel, GridCellParams, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+import { handleSaveClickCellMode } from "./save.cell.function";
 
 /**
 * @description Handles switching a cell to edit mode when press enter, updating cell modes, and saving changes.
@@ -45,6 +46,13 @@ export const handleJumpClickCellMode = (
     }
 
     setCellModesModel({});
+
+    setTimeout(() => {
+
+        handleSaveClickCellMode(params, setRows);
+        
+    }, 0);
+
 
 };
 

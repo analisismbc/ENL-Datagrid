@@ -46,7 +46,7 @@ export const handleAddClickCellMode = (
 
         const newRow: any = {
             id,
-            isNew: false,
+            isNew: true,
         };
 
         columns.forEach((column) => {
