@@ -158,7 +158,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
             <Typography sx={{ background: '#f8f8f8', fontSize: '1.5rem', padding: '10px', }}>
 
-                {`Last update: 09:28 a.m. 09/11/2023`}
+                {`Deploy: ${new Date()}`}
 
             </Typography>
 
