@@ -17,7 +17,7 @@ export const handleAddClickCellMode = (
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
     initializer: Record<string, any> | null,
 ) => {
-    
+
     const isAnyFieldInEditMode = Object.values(cellModesModel)
         .some((fieldModes) => Object.values(fieldModes).some((mode) => mode.mode === 'edit'));
 
@@ -46,12 +46,12 @@ export const handleAddClickCellMode = (
 
         const newRow: any = {
             id,
-            isNew: true,
+            isNew: false,
         };
 
         columns.forEach((column) => {
             if (initializer && initializer.hasOwnProperty(column.field)) {
-                newRow[column.field] = initializer[column.field] || '';
+                newRow[column.field] = initializer[column.field] || '-';
             } else {
                 newRow[column.field] = column.field === 'id' ? id : '';
             }
