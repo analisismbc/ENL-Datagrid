@@ -2,9 +2,10 @@ import { randomInt, randomTraderName } from "@mui/x-data-grid-generator";
 
 import { Box } from "@mui/material";
 import { FullFeaturedCrudGrid } from "./Grid/Grid.component.mbc"
-import { GridColumnHeaderParams } from "@mui/x-data-grid";
+import { GridCellParams, GridColumnHeaderParams } from "@mui/x-data-grid";
 import { handleCellFilter } from "./Utils/handler.column.id";
 import { handleCellFilterDate } from "./Utils/handler.column.date";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 
 export const App = () => {
 
@@ -123,11 +124,30 @@ export const App = () => {
     });
   }
 
+  
+  // _beforeDeleteRow MBCGrid delphi, empleado para validaciones antes de eliminar.
+  const beforeDeleteRow = (_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>{
+    const msj=`¿Esta de acuerdo en eliminar la linea ${params.id} ?`;
+    return window.confirm(msj);
+  };
+  // _deleteRow MBCGrid delphi, empleado comunmente para realizar el proceso de eliminado en la base de datos.    
+  const deleteRow = (_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>{
+    const msj=`Se eliminó la linea ${params.id} de la base de datos`;
+    window.alert(msj);
+  };  
+
 
   return (
     <Box>
 
-      <FullFeaturedCrudGrid _rows={dataGridRows} _columns={dataGridColumns} />
+      <FullFeaturedCrudGrid 
+        _rows={dataGridRows} 
+        _columns={dataGridColumns} 
+
+        _autoDelete={true}
+        _beforeDeleteRow={beforeDeleteRow}
+        _deleteRow={deleteRow}
+      />
 
     </Box>
   )
