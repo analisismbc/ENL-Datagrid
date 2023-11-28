@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp, GridToolbar, GridTreeNode, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
+import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp, GridToolbar, GridTreeNode, MuiEvent, gridClasses, useGridApiRef } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 
 import FeedIcon from '@mui/icons-material/Feed';
@@ -58,7 +58,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const handleCellKeyDown = (params: GridCellParams, event: MuiEvent) => {
 
-        console.log('key-down',{params, event});
+        console.log('key-down', { params, event });
 
         if (Object.keys(cellModesModel).length === 0) {
 
@@ -80,7 +80,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
 
     const handleCellEditStop = useCallback(async (params: GridCellParams<any, unknown, unknown, GridTreeNode>) => {
         // Use a Promise to wait for the next event loop iteration
-        await new Promise((resolve) => setTimeout(resolve, 25));
+        await new Promise((resolve) => setTimeout(resolve, 30));
 
         // Now, the params object should have the latest values
         params.value = apiRef.current.getCellValue(params.id, params.field);
@@ -179,6 +179,15 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                         boxShadow: 0,
                         padding: '0.5vw',
                     },
+                    [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
+                        outline: 'none',
+                        backgroundColor: 'rgba(192, 192, 192, 0.5)', // light gray color
+                    },
+                    [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
+                        outline: 'none',
+                        backgroundColor: 'rgba(192, 192, 192, 0.5)', // light gray color
+                    },
+                    
                 }}
                 slots={{ toolbar: GridToolbar }}
                 slotProps={{
