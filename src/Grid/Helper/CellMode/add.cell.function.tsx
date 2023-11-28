@@ -1,12 +1,17 @@
-import { GridCellModes, GridCellModesModel, GridColDef, GridPaginationModel, GridRowsProp } from '@mui/x-data-grid';
+import {
+    GridCellModesModel,
+    GridColDef,
+    GridPaginationModel,
+    GridRowsProp,
+} from '@mui/x-data-grid';
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
- * @description Handle the addition of a new cell and row to a grid when a user press enter.
+ * @description Handle the addition of a new cell and row to a grid when a user presses enter.
  */
-export const handleAddClickCellMode = (
+export const handleAddClickCellMode = async (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     cellModesModel: GridCellModesModel,
     rows: GridRowsProp<any>,
@@ -17,7 +22,6 @@ export const handleAddClickCellMode = (
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
     initializer: Record<string, any> | null,
 ) => {
-
     const isAnyFieldInEditMode = Object.values(cellModesModel)
         .some((fieldModes) => Object.values(fieldModes).some((mode) => mode.mode === 'edit'));
 
@@ -28,21 +32,19 @@ export const handleAddClickCellMode = (
 
         if (!initializer) {
             initializer = {
-                column1: '-'
+                column1: 'AAAA'
             };
         }
 
         const { top } = apiRef.current.getScrollPosition();
-
         const rowHeight = 52;
 
-        const visibleRowIndex =
-            paginationModel.page > 0
-                ? Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page >
-                    paginationModel.pageSize * (paginationModel.page + 1)
-                    ? paginationModel.pageSize * (paginationModel.page + 1) + 5
-                    : Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page
-                : Math.ceil(top / rowHeight > paginationModel.pageSize ? paginationModel.pageSize + 5 : top / rowHeight);
+        const visibleRowIndex = paginationModel.page > 0
+            ? Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page >
+                paginationModel.pageSize * (paginationModel.page + 1)
+                ? paginationModel.pageSize * (paginationModel.page + 1) + 5
+                : Math.ceil(top / rowHeight) + paginationModel.pageSize * paginationModel.page
+            : Math.ceil(top / rowHeight > paginationModel.pageSize ? paginationModel.pageSize + 5 : top / rowHeight);
 
         const newRow: any = {
             id,
@@ -58,19 +60,24 @@ export const handleAddClickCellMode = (
         });
 
         const updatedRows = [...rows];
-
         updatedRows.splice(visibleRowIndex, 0, newRow);
-
         setRows(updatedRows);
 
         const firstColumn = columns[0];
 
-        setTimeout(() => {
+        // Use requestAnimationFrame to ensure that the scrolling is completed before setting focus
+        await new Promise<void>((resolve) => {
+            const scrollFunction = () => {
+                apiRef.current.scrollToIndexes({ rowIndex: visibleRowIndex, colIndex: 0 });
+                resolve();
+            };
 
-            apiRef.current.setCellFocus(id, firstColumn.field);
+            requestAnimationFrame(scrollFunction);
+        });
 
-        }, 10);
+        // Set focus on the cell
+        apiRef.current.setCellFocus(id, firstColumn.field);
 
-
+        console.log('add -> ', { visibleRowIndex });
     }
 };

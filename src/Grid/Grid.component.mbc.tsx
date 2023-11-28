@@ -87,17 +87,17 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows, _autoDelete, _beforeDele
 
     const handleCellEditStop = useCallback(async (params: GridCellParams, event: MuiEvent) => {
 
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        setTimeout(async () => {
 
-        event.defaultMuiPrevented = true;
+            event.defaultMuiPrevented = true;
 
-        params.value = await apiRef.current.getCellValue(params.id, params.field);
+            params.value = await apiRef.current.getCellValue(params.id, params.field);
 
-        params.formattedValue = await apiRef.current.getCellValue(params.id, params.field);
+            params.formattedValue = await apiRef.current.getCellValue(params.id, params.field);
 
-        console.log('stop-',{params})
+            handleCellEvent(params);
 
-        handleCellEvent(params);
+        }, 50);
 
     }, [apiRef, rows]);
 
@@ -192,10 +192,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows, _autoDelete, _beforeDele
                     }, [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                         outline: 'none',
                         outlineColor: 'gray',
-                        backgroundColor: 'rgba(192, 192, 192, 0.1)', // light gray color
+                        backgroundColor: 'rgba(192, 192, 192, 0.150)', // light gray color
                     },
                     [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
-                        outline: 'none',
+                        outline: 'non',
                         outlineColor: 'gray',
                         backgroundColor: 'white', // light gray color
                     },

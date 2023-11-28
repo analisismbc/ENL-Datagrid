@@ -1,11 +1,11 @@
+import { GridCellParams, GridColumnHeaderParams } from "@mui/x-data-grid";
 import { randomInt, randomTraderName } from "@mui/x-data-grid-generator";
 
 import { Box } from "@mui/material";
 import { FullFeaturedCrudGrid } from "./Grid/Grid.component.mbc"
-import { GridCellParams, GridColumnHeaderParams } from "@mui/x-data-grid";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { handleCellFilter } from "./Utils/handler.column.id";
 import { handleCellFilterDate } from "./Utils/handler.column.date";
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
 
 export const App = () => {
 
@@ -109,7 +109,7 @@ export const App = () => {
   const startDate = new Date('01/01/2000'); // Adjust the start date as needed
   const endDate = new Date('12/31/2023'); // Adjust the end date as needed
 
-  for (let i = 1; i <= 1000; i++) {
+  for (let i = 1; i <= 100000; i++) {
     const randomIndex = Math.floor(Math.random() * countries.length);
     const randomCountry = countries[randomIndex];
 

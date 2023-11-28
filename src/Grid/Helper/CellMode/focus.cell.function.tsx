@@ -1,9 +1,7 @@
 import {
-    GridCellModes,
     GridCellModesModel,
     GridCellParams,
     GridPaginationModel,
-    gridExpandedRowCountSelector,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
@@ -12,9 +10,10 @@ import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { pagination } from "./pagination.cell.function";
 
 /**
-* @description Handles the behavior of switching a cell to edit mode when press enter, updating cell modes, and saving changes in a grid.
-*/
-export const focus = (
+ * @description Handles the behavior of switching a cell to edit mode when press enter,
+ * updating cell modes, and saving changes in a grid.
+ */
+export const focus = async (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
     cellModesModel: GridCellModesModel,
@@ -23,45 +22,33 @@ export const focus = (
     paginationModel: GridPaginationModel,
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
-
     const id = existingRow?.id ?? 0;
-
     const field = params?.field ?? 'id';
 
-    /**
-    * @description Update cell modes model.
-    */
+    // Update cell modes model.
     handleCellModesModelChange({});
 
-    /**
-     * @description Finds the row and column indices based on the provided row ID and field name.
-     */
+    // Find the row and column indices based on the provided row ID and field name.
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
-
         (index) => index === id,
-
     );
-
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
-
-        (column) => column.field === field
-
+        (column) => column.field === field,
     );
 
+    // Update pagination model.
     pagination(paginationModel, setPaginationModel, rowIndex);
 
-    /**
-    * @description Scroll to the cell.
-    */
-    setTimeout(() => {
+    // Scroll to the cell using requestAnimationFrame.
+    await new Promise<void>((resolve) => {
+        const scrollFunction = () => {
+            apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+            resolve();
+        };
 
-        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+        requestAnimationFrame(scrollFunction);
+    });
 
-    }, 500);
-
-    /**
-     * @description Set focus on the cell.
-    */
+    // Set focus on the cell.
     apiRef.current.setCellFocus(id, field);
-
 };
