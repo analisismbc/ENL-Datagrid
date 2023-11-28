@@ -87,7 +87,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows, _autoDelete, _beforeDele
 
     const handleCellEditStop = useCallback(async (params: GridCellParams, event: MuiEvent) => {
 
-        await new Promise((resolve) => setTimeout(resolve, 5));
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         event.defaultMuiPrevented = true;
 
