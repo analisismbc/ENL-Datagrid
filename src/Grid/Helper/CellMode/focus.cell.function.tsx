@@ -54,7 +54,7 @@ export const focus = async (
             apiRef.current.scrollToIndexes({ rowIndex, colIndex });
             setTimeout(() => {
                 resolve();
-            }, 0); // Adjust the delay as needed
+            }, 300); // Adjust the delay as needed
         };
 
         requestAnimationFrame(scrollFunction);
