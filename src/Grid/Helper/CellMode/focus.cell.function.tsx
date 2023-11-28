@@ -43,7 +43,9 @@ export const focus = async (
     await new Promise<void>((resolve) => {
         const scrollFunction = () => {
             apiRef.current.scrollToIndexes({ rowIndex, colIndex });
-            resolve();
+            setTimeout(() => {
+                resolve();
+            }, 100); // Adjust the delay as needed
         };
 
         requestAnimationFrame(scrollFunction);
