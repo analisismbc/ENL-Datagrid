@@ -1,7 +1,9 @@
 import {
+    GridCellModes,
     GridCellModesModel,
     GridCellParams,
     GridPaginationModel,
+    gridExpandedRowCountSelector,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
@@ -10,10 +12,9 @@ import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { pagination } from "./pagination.cell.function";
 
 /**
- * @description Handles the behavior of switching a cell to edit mode when press enter,
- * updating cell modes, and saving changes in a grid.
- */
-export const focus = async (
+* @description Handles the behavior of switching a cell to edit mode when press enter, updating cell modes, and saving changes in a grid.
+*/
+export const focus = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
     cellModesModel: GridCellModesModel,
@@ -22,44 +23,45 @@ export const focus = async (
     paginationModel: GridPaginationModel,
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
+
     const id = existingRow?.id ?? 0;
+
     const field = params?.field ?? 'id';
 
-    // Update cell modes model.
+    /**
+    * @description Update cell modes model.
+    */
     handleCellModesModelChange({});
 
-    // Find the row and column indices based on the provided row ID and field name.
+    /**
+     * @description Finds the row and column indices based on the provided row ID and field name.
+     */
     const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
+
         (index) => index === id,
+
     );
+
     const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
-        (column) => column.field === field,
+
+        (column) => column.field === field
+
     );
 
-    // Update pagination model.
-    await new Promise<void>((resolve) => {
-        const changePage = () => {
-            pagination(paginationModel, setPaginationModel, rowIndex);
-            setTimeout(() => {
-                resolve();
-            }, 0); // Adjust the delay as needed
-        };
+    pagination(paginationModel, setPaginationModel, rowIndex);
 
-        requestAnimationFrame(changePage);
-    });
+    /**
+    * @description Scroll to the cell.
+    */
+    setTimeout(() => {
 
-    // Scroll to the cell using requestAnimationFrame.
-    await new Promise<void>((resolve) => {
-        const scrollFunction = () => {
-            apiRef.current.scrollToIndexes({ rowIndex, colIndex });
-            setTimeout(() => {
-                resolve();
-            }, 300); // Adjust the delay as needed
-        };
+        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 
-        requestAnimationFrame(scrollFunction);
-    });
+    }, 500);
 
-    // Set focus on the cell.
+    /**
+     * @description Set focus on the cell.
+    */
     apiRef.current.setCellFocus(id, field);
+
 };
