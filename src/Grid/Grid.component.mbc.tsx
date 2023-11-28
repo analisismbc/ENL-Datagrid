@@ -1,8 +1,9 @@
-import { Badge, Box, Button, Typography } from "@mui/material";
-import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp, GridToolbar, GridTreeNode, MuiEvent, gridClasses, useGridApiRef } from "@mui/x-data-grid";
+import { Badge, Box, Button, Typography, gridClasses } from "@mui/material";
+import { DataGrid, GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp, GridToolbar, GridTreeNode, MuiEvent, useGridApiRef } from "@mui/x-data-grid";
 import { useCallback, useEffect, useState } from "react";
 
 import FeedIcon from '@mui/icons-material/Feed';
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SortIcon from '@mui/icons-material/Sort';
 import { generateGridColumns } from "./Utils/Columns";
@@ -20,10 +21,16 @@ interface GridDefinitionProps {
     _columns: GridColDef<any>[];
     // _handleRowClick: GridEventListener<"rowClick">;
 
+    // _autoDelete MBCGrid delphi, bandera/propiedad empleada en el grid original para habilitar el borrado con la tecla "SUPR"/DELETE    
+    _autoDelete?:Boolean;  
+    // _beforeDeleteRow MBCGrid delphi, empleado para validaciones antes de eliminar.
+    _beforeDeleteRow?:(_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>boolean;
+    // _deleteRow MBCGrid delphi, empleado comunmente para realizar el proceso de eliminado en la base de datos.    
+    _deleteRow?:(_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>void;
 }
 
-export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: GridDefinitionProps) => {
-
+export const FullFeaturedCrudGrid = ({ _columns, _rows, _autoDelete, _beforeDeleteRow, _deleteRow /*_handleRowClick*/ }: GridDefinitionProps) => {
+    const [autoDelete,setAutoDelete] = useState<Boolean>(_autoDelete ? true:false);
     const [rows, setRows] = useState<GridRowsProp<any>>(_rows);
 
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
@@ -72,7 +79,8 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
             }
 
             handleKeyDownGridContext(
-                params, event, rows, setRows, setCellModesModel, cellModesModel, columns, mode, apiRef, paginationModel, setPaginationModel
+                params, event, rows, setRows, setCellModesModel, cellModesModel, columns, mode, apiRef, paginationModel, setPaginationModel, 
+                autoDelete, _beforeDeleteRow, _deleteRow,
             );
         }
 
@@ -178,16 +186,7 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows /*_handleRowClick*/ }: Gr
                         height: '80vh',
                         boxShadow: 0,
                         padding: '0.5vw',
-                    },
-                    [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-                        outline: 'none',
-                        backgroundColor: 'rgba(192, 192, 192, 0.5)', // light gray color
-                    },
-                    [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
-                        outline: 'none',
-                        backgroundColor: 'rgba(192, 192, 192, 0.5)', // light gray color
-                    },
-                    
+                    }
                 }}
                 slots={{ toolbar: GridToolbar }}
                 slotProps={{

@@ -27,6 +27,9 @@ export const handleKeyDownGridContext = (
     apiRef: React.MutableRefObject<GridApiCommunity>,
     paginationModel: GridPaginationModel,
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
+    autoDelete:Boolean,
+    _beforeDeleteRow?:(_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>boolean,
+    _deleteRow?:(_apiRef: React.MutableRefObject<GridApiCommunity>, params: GridCellParams)=>void,
 ) => {
 
     const selectedRowId = params.id;
@@ -52,15 +55,20 @@ export const handleKeyDownGridContext = (
     };
 
     const handleDeleteKey = () => {
-
         if (cellMode !== GridCellModes.Edit) {
-
-            event.defaultMuiPrevented = true;
-
-            handleDeleteClickCellMode(rows, setRows, selectedRowId);
-
-        }
-
+            event.defaultMuiPrevented = true;        
+            let continua:Boolean = autoDelete;
+            if (continua){
+                if ( (_beforeDeleteRow != null) && (_beforeDeleteRow != undefined) && ((typeof _beforeDeleteRow)=='function') ){
+                    continua = _beforeDeleteRow(apiRef,params);
+                }
+            }
+            if (continua){
+                if ( (_deleteRow != null) && (_deleteRow != undefined) && ((typeof _deleteRow)=='function') )
+                    _deleteRow(apiRef,params);                
+                handleDeleteClickCellMode(rows, setRows, selectedRowId);
+            };
+        };
     };
 
     const handleInsertKey = () => {
