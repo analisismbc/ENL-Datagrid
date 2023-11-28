@@ -37,7 +37,16 @@ export const focus = async (
     );
 
     // Update pagination model.
-    pagination(paginationModel, setPaginationModel, rowIndex);
+    await new Promise<void>((resolve) => {
+        const changePage = () => {
+            pagination(paginationModel, setPaginationModel, rowIndex);
+            setTimeout(() => {
+                resolve();
+            }, 0); // Adjust the delay as needed
+        };
+
+        requestAnimationFrame(changePage);
+    });
 
     // Scroll to the cell using requestAnimationFrame.
     await new Promise<void>((resolve) => {
@@ -45,7 +54,7 @@ export const focus = async (
             apiRef.current.scrollToIndexes({ rowIndex, colIndex });
             setTimeout(() => {
                 resolve();
-            }, 100); // Adjust the delay as needed
+            }, 0); // Adjust the delay as needed
         };
 
         requestAnimationFrame(scrollFunction);
