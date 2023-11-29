@@ -70,46 +70,52 @@ export const handleAddClickCellMode = async (
 
         setTimeout(() => {
 
-            const id = newRow?.id ?? 0;
+            focus(newRow, handleCellModesModelChange, apiRef, paginationModel, setPaginationModel);
 
-            const field = 'column1' ?? 'id';
-
-            /**
-            * @description Update cell modes model.
-            */
-            handleCellModesModelChange({});
-
-            /**
-             * @description Finds the row and column indices based on the provided row ID and field name.
-             */
-            const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
-
-                (index) => index === id,
-
-            );
-
-            const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
-
-                (column) => column.field === field
-
-            );
-
-            pagination(paginationModel, setPaginationModel, rowIndex);
-
-            /**
-            * @description Scroll to the cell.
-            */
-            setTimeout(() => {
-
-                apiRef.current.scrollToIndexes({ rowIndex, colIndex });
-
-            }, 600);
-
-            /**
-             * @description Set focus on the cell.
-            */
-            apiRef.current.setCellFocus(id, field);
-
-        }, 50);
+        }, 10);
     }
 };
+
+const focus = (newRow: any, handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void, apiRef: React.MutableRefObject<GridApiCommunity>, paginationModel: GridPaginationModel, setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>) => {
+   
+    const id = newRow?.id ?? 0;
+
+    const field = 'column1' ?? 'id';
+
+    /**
+    * @description Update cell modes model.
+    */
+    handleCellModesModelChange({});
+
+    /**
+     * @description Finds the row and column indices based on the provided row ID and field name.
+     */
+    const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
+
+        (index) => index === id
+
+    );
+
+    const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
+
+        (column) => column.field === field
+
+    );
+
+    pagination(paginationModel, setPaginationModel, rowIndex);
+
+    /**
+    * @description Scroll to the cell.
+    */
+    setTimeout(() => {
+
+        apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+
+    }, 600);
+
+    /**
+     * @description Set focus on the cell.
+    */
+    apiRef.current.setCellFocus(id, field);
+}
+
