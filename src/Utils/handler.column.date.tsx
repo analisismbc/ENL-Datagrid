@@ -1,7 +1,7 @@
 import { GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, GridRowsProp } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
-import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
+import { handleCellFocus } from "../Grid/Helper/CellMode/focus.cell.function";
 import { handleJumpClickCellMode } from "../Grid/Helper/CellMode/jump.cell.function";
 
 export const handleCellFilterDate: Function = (
@@ -66,7 +66,7 @@ export const handleCellFilterDate: Function = (
         */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+            handleCellFocus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
         }, 0);
 
@@ -87,7 +87,10 @@ export const handleCellFilterDate: Function = (
                 params,
                 rows,
                 setRows,
-                apiRef
+                apiRef,
+                handleCellModesModelChange,
+                paginationModel,
+                setPaginationModel
             )
 
         }

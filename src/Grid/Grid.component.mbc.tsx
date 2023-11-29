@@ -139,7 +139,10 @@ export const FullFeaturedCrudGrid = ({ _columns, _rows, _autoDelete, _beforeDele
                 params,
                 rows,
                 setRows,
-                apiRef
+                apiRef,
+                handleCellModesModelChange,
+                paginationModel,
+                setPaginationModel
             )
 
         }

@@ -1,9 +1,7 @@
 import {
-    GridCellModes,
     GridCellModesModel,
     GridCellParams,
     GridPaginationModel,
-    gridExpandedRowCountSelector,
     gridExpandedSortedRowIdsSelector,
     gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
@@ -14,7 +12,7 @@ import { pagination } from "./pagination.cell.function";
 /**
 * @description Handles the behavior of switching a cell to edit mode when press enter, updating cell modes, and saving changes in a grid.
 */
-export const focus = (
+export const handleCellFocus = (
     handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
     existingRow: any,
     cellModesModel: GridCellModesModel,
@@ -57,7 +55,7 @@ export const focus = (
 
         apiRef.current.scrollToIndexes({ rowIndex, colIndex });
 
-    }, 600);
+    }, 400);
 
     /**
      * @description Set focus on the cell.

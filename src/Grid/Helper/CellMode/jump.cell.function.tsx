@@ -2,13 +2,13 @@ import {
     GridCellModesModel,
     GridCellParams,
     GridColDef,
+    GridPaginationModel,
     GridRowsProp,
-    gridExpandedRowCountSelector,
     gridExpandedSortedRowIdsSelector,
-    gridVisibleColumnDefinitionsSelector,
 } from "@mui/x-data-grid";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+import { handleCellFocus } from "./focus.cell.function";
 import { handleSaveClickCellMode } from "./save.cell.function";
 
 /**
@@ -22,6 +22,9 @@ export const handleJumpClickCellMode = (
     rows: GridRowsProp<any>,
     setRows: React.Dispatch<React.SetStateAction<GridRowsProp<any>>>,
     apiRef: React.MutableRefObject<GridApiCommunity>,
+    handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void,
+    paginationModel: GridPaginationModel,
+    setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 ) => {
     const { id, field } = params;
 
@@ -44,11 +47,7 @@ export const handleJumpClickCellMode = (
 
     let nextFieldIndex = fieldIndex + 1;
 
-    console.log({ keys, fieldIndex, nextFieldIndex, column: Object.keys(rows[0]).filter((key) => key !== "isNew") })
-
     while (nextFieldIndex < keys.length) {
-
-        console.log('jump-one', { nextFieldIndex, length: keys.length });
 
         const nextField = keys[nextFieldIndex];
 
@@ -59,23 +58,10 @@ export const handleJumpClickCellMode = (
 
     if (rowIndex < rows.length - 1) {
 
-        console.log('jump-two', { rowIndex });
-
         const nextRowId = gridExpandedSortedRowIdsSelector(apiRef)[rowIndex + 1];
 
         apiRef.current.setCellFocus(nextRowId, columns[0].field);
     }
 
     setCellModesModel({});
-
-    // Scroll to the cell
-    const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
-
-        (column) => column.field === field
-
-    );
-
-    const downRowIndex = Math.min(gridExpandedRowCountSelector(apiRef) - 1, rowIndex + 1);
-
-    apiRef.current.scrollToIndexes({ rowIndex: downRowIndex, colIndex });
 };

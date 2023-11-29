@@ -2,7 +2,7 @@ import { GridCellModesModel, GridCellParams, GridColDef, GridPaginationModel, Gr
 import { handleAddClickCellMode, handleJumpClickCellMode } from "../Grid/Helper";
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
-import { focus } from "../Grid/Helper/CellMode/focus.cell.function";
+import { handleCellFocus } from "../Grid/Helper/CellMode/focus.cell.function";
 
 export const handleCellFilter: Function = (
 
@@ -17,8 +17,6 @@ export const handleCellFilter: Function = (
     setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>,
 
 ) => {
-
-    console.log('rows-before-checking', { rows })
 
     const rowIndex = rows.findIndex((x) => x.id === params?.id);
 
@@ -59,7 +57,7 @@ export const handleCellFilter: Function = (
         */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+            handleCellFocus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
         }, 0);
 
@@ -112,12 +110,26 @@ export const handleCellFilter: Function = (
                     params,
                     rows,
                     setRows,
-                    apiRef
+                    apiRef,
+                    handleCellModesModelChange,
+                    paginationModel,
+                    setPaginationModel
                 )
 
             }
 
         }, 0);
+
+        /**
+         @description Use setTimeout to ensure it's called once in the next tick.
+        */
+        setTimeout(() => {
+
+            const existingRow = rows.find((row) => row.isNew);
+
+            handleCellFocus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+
+        }, 10);
 
     }
 
@@ -142,7 +154,10 @@ export const handleCellFilter: Function = (
                     params,
                     rows,
                     setRows,
-                    apiRef
+                    apiRef,
+                    handleCellModesModelChange,
+                    paginationModel,
+                    setPaginationModel
                 )
 
             }
@@ -172,7 +187,10 @@ export const handleCellFilter: Function = (
                     params,
                     rows,
                     setRows,
-                    apiRef
+                    apiRef,
+                    handleCellModesModelChange,
+                    paginationModel,
+                    setPaginationModel
                 )
 
             }
@@ -197,7 +215,7 @@ export const handleCellFilter: Function = (
         */
         setTimeout(() => {
 
-            focus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
+            handleCellFocus(handleCellModesModelChange, existingRow, cellModesModel, params, apiRef, paginationModel, setPaginationModel);
 
         }, 0);
 

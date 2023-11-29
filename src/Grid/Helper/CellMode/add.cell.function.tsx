@@ -26,7 +26,7 @@ export const handleAddClickCellMode = async (
     initializer: Record<string, any> | null,
 ) => {
     const isAnyFieldInEditMode = Object.values(cellModesModel)
-        .some((fieldModes) => Object.values(fieldModes).some((mode) => mode.mode === 'edit'));
+        .some((fieldModes) => Object.values(fieldModes).some((mode) => mode.mode === 'view'));
 
     const isEditModeActive: boolean = isAnyFieldInEditMode;
 
@@ -77,7 +77,7 @@ export const handleAddClickCellMode = async (
 };
 
 const focus = (newRow: any, handleCellModesModelChange: (newCellModesModel: GridCellModesModel) => void, apiRef: React.MutableRefObject<GridApiCommunity>, paginationModel: GridPaginationModel, setPaginationModel: React.Dispatch<React.SetStateAction<GridPaginationModel>>) => {
-   
+
     const id = newRow?.id ?? 0;
 
     const field = 'column1' ?? 'id';

@@ -49,7 +49,10 @@ export const handleKeyDownGridContext = (
             params,
             rows,
             setRows,
-            apiRef
+            apiRef,
+            handleCellModesModelChange,
+            paginationModel,
+            setPaginationModel
         )
 
     };
