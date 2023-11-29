@@ -3,9 +3,12 @@ import {
     GridColDef,
     GridPaginationModel,
     GridRowsProp,
+    gridExpandedSortedRowIdsSelector,
+    gridVisibleColumnDefinitionsSelector,
 } from '@mui/x-data-grid';
 
 import { GridApiCommunity } from "@mui/x-data-grid/models/api/gridApiCommunity";
+import { pagination } from './pagination.cell.function';
 import { randomId } from "@mui/x-data-grid-generator";
 
 /**
@@ -32,7 +35,7 @@ export const handleAddClickCellMode = async (
 
         if (!initializer) {
             initializer = {
-                column1: 'AAAA'
+                column1: ''
             };
         }
 
@@ -60,24 +63,53 @@ export const handleAddClickCellMode = async (
         });
 
         const updatedRows = [...rows];
+
         updatedRows.splice(visibleRowIndex, 0, newRow);
+
         setRows(updatedRows);
 
-        const firstColumn = columns[0];
+        setTimeout(() => {
 
-        // Use requestAnimationFrame to ensure that the scrolling is completed before setting focus
-        await new Promise<void>((resolve) => {
-            const scrollFunction = () => {
-                apiRef.current.scrollToIndexes({ rowIndex: visibleRowIndex, colIndex: 0 });
-                resolve();
-            };
+            const id = newRow?.id ?? 0;
 
-            requestAnimationFrame(scrollFunction);
-        });
+            const field = 'column1' ?? 'id';
 
-        // Set focus on the cell
-        apiRef.current.setCellFocus(id, firstColumn.field);
+            /**
+            * @description Update cell modes model.
+            */
+            handleCellModesModelChange({});
 
-        console.log('add -> ', { visibleRowIndex });
+            /**
+             * @description Finds the row and column indices based on the provided row ID and field name.
+             */
+            const rowIndex = gridExpandedSortedRowIdsSelector(apiRef).findIndex(
+
+                (index) => index === id,
+
+            );
+
+            const colIndex = gridVisibleColumnDefinitionsSelector(apiRef).findIndex(
+
+                (column) => column.field === field
+
+            );
+
+            pagination(paginationModel, setPaginationModel, rowIndex);
+
+            /**
+            * @description Scroll to the cell.
+            */
+            setTimeout(() => {
+
+                apiRef.current.scrollToIndexes({ rowIndex, colIndex });
+
+            }, 600);
+
+            /**
+             * @description Set focus on the cell.
+            */
+            apiRef.current.setCellFocus(id, field);
+
+        }, 50);
     }
 };
